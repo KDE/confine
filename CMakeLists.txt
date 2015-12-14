@@ -30,7 +30,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
  
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
  
-set(confine_SRCS src/main.cpp src/mainwindow.cpp src/profilemanager.cpp)
+set(confine_SRCS src/main.cpp src/mainwindow.cpp src/profilemanager.cpp src/usermanager.cpp src/user.cpp)
  
 # just plain add_executable
 add_executable(confine ${confine_SRCS})
