@@ -31,10 +31,17 @@ public:
   User(QString& userName, QString& userShell, QString& userHomeDir);
   ~User();
   QString getName();
+  QString getXDG_CONFIG_DIRS();
+  QString getXDG_CONFIG_HOME();
+  void setXDG_CONFIG_DIRS(QString& configDir);
+  void setXDG_CONFIG_HOME(QString& configHome);
+  
 private:
   QString name;
   QString shell;
   QString homeDir;
+  QString XDG_CONFIG_DIRS;
+  QString XDG_CONFIG_HOME;
 };
 
 #endif // USER_H

@@ -27,10 +27,16 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <QFile>
+#include <QList>
+#include <QDir>
 #include <QDebug>
 
 UserManager::UserManager()
 {
+    //TODO: make this configurable, e.g. bashrc
+    envFileName = ".pam_environment";
+    XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
+    XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
 }
 
@@ -51,7 +57,85 @@ void UserManager::getUsersOnSystem()
         QString homeDir = QString::fromLocal8Bit(pwd_entry->pw_dir);
         QString shell =  QString::fromLocal8Bit(pwd_entry->pw_shell);
         User userEntry(name, shell, homeDir);
+        getXDGConfig(homeDir, userEntry);
         users.append(userEntry);
     }
     fclose(fpwd);
+}
+
+void UserManager::getXDGConfig(QString& homeDir, User& user)
+{
+    if (homeDir.isEmpty() || !QFile::exists(homeDir)) {
+        return;
+    }
+
+    QString filePath(homeDir + QDir::separator() + envFileName);
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QString configDirs;
+    QString configHome;
+    while (!file.atEnd()) {
+        QString line = file.readLine();
+
+        if (line.isEmpty())
+            continue;
+
+        if (line.startsWith(XDG_CONFIG_DIRS)) {
+            configDirs = line.mid(line.indexOf('=') + 1).trimmed();
+        } else if (line.startsWith(XDG_CONFIG_HOME)) {
+            configHome = line.mid(line.indexOf('=') + 1).trimmed();
+        }
+    }
+    user.setXDG_CONFIG_DIRS(configDirs);
+    user.setXDG_CONFIG_HOME(configHome);
+}
+
+void UserManager::setXDGConfig(QString& homeDir, QString& configDirs, QString& configHome)
+{
+    if (homeDir.isEmpty() || !QFile::exists(homeDir)) {
+        return;
+    }
+
+    QString filePath(homeDir + QDir::separator() + envFileName);
+    qDebug() << filePath;
+
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        return;
+    }
+    QStringList fileContent;
+    bool hasConfigDirs = false;
+    bool hasConfigHome = false;
+    while (!file.atEnd()) {
+        QString line = file.readLine();
+        if (!hasConfigDirs && line.startsWith(XDG_CONFIG_DIRS)) {
+            hasConfigDirs = true;
+            line = QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
+        } else if (!hasConfigHome && line.startsWith(XDG_CONFIG_HOME)) {
+            hasConfigHome = true;
+            line = QLatin1String("XDG_CONFIG_HOME=") + configHome + QLatin1Char('\n');
+        }
+        fileContent << line;
+    }
+
+    if (!hasConfigDirs) {
+        fileContent << QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
+    }
+
+    if (!hasConfigHome) {
+        fileContent << QLatin1String("XDG_CONFIG_HOME=") + configHome + QLatin1Char('\n');
+    }
+
+    file.seek(0);
+    QTextStream out(&file);
+    Q_FOREACH(const QString & line, fileContent) {
+        out << line;
+    }
+    file.flush();
+    file.close();
+
 }

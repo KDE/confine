@@ -32,10 +32,14 @@ class UserManager
 public:
 UserManager();
 ~UserManager();
+void getXDGConfig(QString& homeDir, User& user);
+void setXDGConfig(QString& homeDir, QString& configDirs, QString& configHome);
 
 private:
   QList<User> users;
-  
+  QString envFileName;
+  QString XDG_CONFIG_DIRS;
+  QString XDG_CONFIG_HOME;
   void getUsersOnSystem();
   
 };

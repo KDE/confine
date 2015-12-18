@@ -39,6 +39,25 @@ User::~User()
 
 QString User::getName()
 {
-  return name;
+    return name;
 }
 
+QString User::getXDG_CONFIG_DIRS()
+{
+    return XDG_CONFIG_DIRS;
+}
+
+QString User::getXDG_CONFIG_HOME()
+{
+    return XDG_CONFIG_HOME;
+}
+
+void User::setXDG_CONFIG_DIRS(QString& configDir)
+{
+    XDG_CONFIG_DIRS = configDir;
+}
+
+void User::setXDG_CONFIG_HOME(QString& configHome)
+{
+    XDG_CONFIG_HOME = configHome;
+}
