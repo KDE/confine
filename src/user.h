@@ -27,14 +27,18 @@
 
 class User
 {
-public:
+public:   
   User(QString& userName, QString& userShell, QString& userHomeDir);
   ~User();
   QString getName();
+  QString getHomeDir();
   QString getXDG_CONFIG_DIRS();
   QString getXDG_CONFIG_HOME();
+  QString getEnvironmentVariableFile();
   void setXDG_CONFIG_DIRS(QString& configDir);
   void setXDG_CONFIG_HOME(QString& configHome);
+  void setEnvironmentVariableFile(QString& varFile);
+  
   
 private:
   QString name;
@@ -42,6 +46,7 @@ private:
   QString homeDir;
   QString XDG_CONFIG_DIRS;
   QString XDG_CONFIG_HOME;
+  QString environmentVariableFile;
 };
 
 #endif // USER_H

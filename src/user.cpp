@@ -26,7 +26,9 @@
 
 User::User(QString& userName, QString& userShell, QString& userHomeDir) : name(userName),
     shell(userShell),
-    homeDir(userHomeDir)
+    homeDir(userHomeDir),
+    environmentVariableFile(QLatin1String(".profile"))
+
 {
 
 
@@ -42,6 +44,11 @@ QString User::getName()
     return name;
 }
 
+QString User::getHomeDir()
+{
+    return homeDir;
+}
+
 QString User::getXDG_CONFIG_DIRS()
 {
     return XDG_CONFIG_DIRS;
@@ -52,6 +59,11 @@ QString User::getXDG_CONFIG_HOME()
     return XDG_CONFIG_HOME;
 }
 
+QString User::getEnvironmentVariableFile()
+{
+    return environmentVariableFile;
+}
+
 void User::setXDG_CONFIG_DIRS(QString& configDir)
 {
     XDG_CONFIG_DIRS = configDir;
@@ -60,4 +72,9 @@ void User::setXDG_CONFIG_DIRS(QString& configDir)
 void User::setXDG_CONFIG_HOME(QString& configHome)
 {
     XDG_CONFIG_HOME = configHome;
+}
+
+void User::setEnvironmentVariableFile(QString& varFile)
+{
+    environmentVariableFile = varFile;
 }
