@@ -34,6 +34,8 @@ UserManager();
 ~UserManager();
 void getXDGConfig(User& user);
 void setXDGConfig(User& user, QString& configDirs, QString& configHome);
+QStringList getKDEActionRestrictions(QString& kdeglobals);
+void setKDEActionRestriction(QString& kdeglobals, QString& key, QString& value);
 
 private:
   QList<User> users;

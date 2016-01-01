@@ -29,6 +29,10 @@
 #include <QFile>
 #include <QList>
 #include <QDir>
+#include <KConfig>
+#include <KConfigGroup>
+#include <ksharedconfig.h> 
+#include <kconfigbase.h> 
 #include <QDebug>
 
 UserManager::UserManager()
@@ -141,4 +145,20 @@ void UserManager::setXDGConfig(User& user, QString& configDirs, QString& configH
     file.flush();
     file.close();
 
+}
+
+QStringList UserManager::getKDEActionRestrictions(QString& kdeglobals)
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(kdeglobals);
+    KConfigGroup grp(config, "KDE Action Restrictions");
+    return grp.keyList();
+}
+
+void UserManager::setKDEActionRestriction(QString& kdeglobals, QString& key, QString& value)
+{
+    KConfig config(kdeglobals);
+    KConfigGroup grp(&config, "KDE Action Restrictions");
+    if (!grp.isImmutable()) {
+        grp.writeEntry(key, value, KConfigBase::Persistent);
+    }
 }
