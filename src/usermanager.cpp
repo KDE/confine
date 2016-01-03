@@ -22,6 +22,7 @@
 
 #include "usermanager.h"
 #include "user.h"
+#include "profile.h"
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -29,10 +30,6 @@
 #include <QFile>
 #include <QList>
 #include <QDir>
-#include <KConfig>
-#include <KConfigGroup>
-#include <ksharedconfig.h> 
-#include <kconfigbase.h> 
 #include <QDebug>
 
 UserManager::UserManager()
@@ -91,74 +88,18 @@ void UserManager::getXDGConfig(User& user)
             configHome = line.mid(line.indexOf('=') + 1).trimmed();
         }
     }
-    user.setXDG_CONFIG_DIRS(configDirs);
+
+    QStringList configDirsList = configDirs.split(QLatin1Char(':'));
+    Q_FOREACH(const QString & singleDir, configDirsList) {
+      QString dir(singleDir);
+      if(!profiles.contains(dir)){
+	Profile pf(dir);
+	profiles.insert(dir, pf);
+      }
+      user.addProfile(profiles.value(dir));
+    }
+
     user.setXDG_CONFIG_HOME(configHome);
 }
 
-void UserManager::setXDGConfig(User& user, QString& configDirs, QString& configHome)
-{
-    if (user.getHomeDir().isEmpty() || !QFile::exists(user.getHomeDir())) {
-        return;
-    }
 
-    QString filePath(user.getHomeDir() + QDir::separator() + user.getEnvironmentVariableFile());
-
-    QString prefix;
-
-    if (user.getEnvironmentVariableFile() == ".profile") {
-        prefix = "export ";
-    }
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        return;
-    }
-
-    QStringList fileContent;
-    bool hasConfigDirs = false;
-    bool hasConfigHome = false;
-    while (!file.atEnd()) {
-        QString line = file.readLine();
-        if (!hasConfigDirs && line.contains(XDG_CONFIG_DIRS) && line.indexOf('=') > -1) {
-            hasConfigDirs = true;
-            line = prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
-        } else if (!hasConfigHome && line.contains(XDG_CONFIG_HOME) && line.indexOf('=') > -1) {
-            hasConfigHome = true;
-            line = prefix + QLatin1String("XDG_CONFIG_HOME=") + configHome + QLatin1Char('\n');
-        }
-        fileContent << line;
-    }
-
-    if (!hasConfigDirs) {
-        fileContent << prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
-    }
-
-    if (!hasConfigHome) {
-        fileContent << prefix + QLatin1String("XDG_CONFIG_HOME=") + configHome + QLatin1Char('\n');
-    }
-
-    file.seek(0);
-    QTextStream out(&file);
-    Q_FOREACH(const QString & line, fileContent) {
-        out << line;
-    }
-    file.flush();
-    file.close();
-
-}
-
-QStringList UserManager::getKDEActionRestrictions(QString& kdeglobals)
-{
-    KSharedConfigPtr config = KSharedConfig::openConfig(kdeglobals);
-    KConfigGroup grp(config, "KDE Action Restrictions");
-    return grp.keyList();
-}
-
-void UserManager::setKDEActionRestriction(QString& kdeglobals, QString& key, QString& value)
-{
-    KConfig config(kdeglobals);
-    KConfigGroup grp(&config, "KDE Action Restrictions");
-    if (!grp.isImmutable()) {
-        grp.writeEntry(key, value, KConfigBase::Persistent);
-    }
-}

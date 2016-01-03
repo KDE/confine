@@ -21,8 +21,13 @@
  */
 
 #include "user.h"
+#include "profile.h"
 
 #include <QString>
+#include <QFile>
+#include <QList>
+#include <QDir>
+#include <QTextStream>
 
 User::User(QString& userName, QString& userShell, QString& userHomeDir) : name(userName),
     shell(userShell),
@@ -49,11 +54,6 @@ QString User::getHomeDir()
     return homeDir;
 }
 
-QString User::getXDG_CONFIG_DIRS()
-{
-    return XDG_CONFIG_DIRS;
-}
-
 QString User::getXDG_CONFIG_HOME()
 {
     return XDG_CONFIG_HOME;
@@ -64,11 +64,6 @@ QString User::getEnvironmentVariableFile()
     return environmentVariableFile;
 }
 
-void User::setXDG_CONFIG_DIRS(QString& configDir)
-{
-    XDG_CONFIG_DIRS = configDir;
-}
-
 void User::setXDG_CONFIG_HOME(QString& configHome)
 {
     XDG_CONFIG_HOME = configHome;
@@ -77,4 +72,69 @@ void User::setXDG_CONFIG_HOME(QString& configHome)
 void User::setEnvironmentVariableFile(QString& varFile)
 {
     environmentVariableFile = varFile;
+}
+
+void User::addProfile(const Profile& profile)
+{
+  profiles.append(profile);
+}
+
+void User::save()
+{
+    if (homeDir.isEmpty() || !QFile::exists(homeDir)) {
+        return;
+    }
+
+    QString filePath(homeDir + QDir::separator() + environmentVariableFile);
+
+    QString prefix;
+
+    if (environmentVariableFile == ".profile") {
+        prefix = "export ";
+    }
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        return;
+    }
+    
+    QString configDirs;
+    QStringList helperList;
+    Q_FOREACH(const Profile & pf, profiles) {
+      helperList << pf.getDirectory();
+    }
+    
+    configDirs = helperList.join(QLatin1Char(':'));
+    
+    QStringList fileContent;
+    bool hasConfigDirs = false;
+    bool hasConfigHome = false;
+    while (!file.atEnd()) {
+        QString line = file.readLine();
+        if (!hasConfigDirs && line.contains(QLatin1String("XDG_CONFIG_DIRS")) && line.indexOf('=') > -1) {
+            hasConfigDirs = true;
+            line = prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
+        } else if (!hasConfigHome && line.contains(XDG_CONFIG_HOME) && line.indexOf('=') > -1) {
+            hasConfigHome = true;
+            line = prefix + QLatin1String("XDG_CONFIG_HOME=") + XDG_CONFIG_HOME + QLatin1Char('\n');
+        }
+        fileContent << line;
+    }
+
+    if (!hasConfigDirs) {
+        fileContent << prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
+    }
+
+    if (!hasConfigHome) {
+        fileContent << prefix + QLatin1String("XDG_CONFIG_HOME=") + XDG_CONFIG_HOME + QLatin1Char('\n');
+    }
+
+    file.seek(0);
+    QTextStream out(&file);
+    Q_FOREACH(const QString & line, fileContent) {
+        out << line;
+    }
+    file.flush();
+    file.close();
+
 }

@@ -24,8 +24,10 @@
 #define USERMANAGER_H
 
 #include "user.h"
+#include "profile.h"
 
 #include <QList>
+#include <QHash>
 
 class UserManager
 {
@@ -34,11 +36,11 @@ UserManager();
 ~UserManager();
 void getXDGConfig(User& user);
 void setXDGConfig(User& user, QString& configDirs, QString& configHome);
-QStringList getKDEActionRestrictions(QString& kdeglobals);
-void setKDEActionRestriction(QString& kdeglobals, QString& key, QString& value);
+
 
 private:
   QList<User> users;
+  QHash<QString, Profile> profiles;
   QString XDG_CONFIG_DIRS;
   QString XDG_CONFIG_HOME;
   void getUsersOnSystem();

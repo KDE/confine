@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  <copyright holder> <email>
+ * Copyright 2016  <copyright holder> <email>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,36 +20,25 @@
  * 
  */
 
-#ifndef USER_H
-#define USER_H
+#ifndef PROFILE_H
+#define PROFILE_H
 
-#include "profile.h"
 #include <QString>
-#include <QList>
 
-class User
+class Profile
 {
-public:   
-  User(QString& userName, QString& userShell, QString& userHomeDir);
-  ~User();
-  QString getName();
-  QString getHomeDir();
-  QString getXDG_CONFIG_DIRS();
-  QString getXDG_CONFIG_HOME();
-  QString getEnvironmentVariableFile();
-  void setXDG_CONFIG_DIRS(QString& configDir);
-  void setXDG_CONFIG_HOME(QString& configHome);
-  void setEnvironmentVariableFile(QString& varFile);
-  void save();
-  void addProfile(const Profile& profile);
-  
+public:
+Profile();
+Profile(QString& profileDir);
+Profile(QString& profileDir, QString& profileName);
+~Profile();
+QStringList getKDEActionRestrictions();
+void setKDEActionRestriction(QString& key, QString& value);
+QString getDirectory() const;
+
 private:
   QString name;
-  QString shell;
-  QString homeDir;
-  QString XDG_CONFIG_HOME;
-  QString environmentVariableFile;
-  QList<Profile> profiles;
+  QString directory;
 };
 
-#endif // USER_H
+#endif // PROFILE_H
