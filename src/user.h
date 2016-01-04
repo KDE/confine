@@ -32,7 +32,7 @@ class User
 public:   
   User(QString& userName, QString& userShell, QString& userHomeDir);
   ~User();
-  QString getName();
+  QString getName() const;
   QString getHomeDir();
   QString getXDG_CONFIG_DIRS();
   QString getXDG_CONFIG_HOME();

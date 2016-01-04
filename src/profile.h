@@ -29,12 +29,13 @@ class Profile
 {
 public:
 Profile();
-Profile(QString& profileDir);
+explicit Profile(QString& profileDir);
 Profile(QString& profileDir, QString& profileName);
 ~Profile();
 QStringList getKDEActionRestrictions();
 void setKDEActionRestriction(QString& key, QString& value);
 QString getDirectory() const;
+QString getName() const;
 
 private:
   QString name;

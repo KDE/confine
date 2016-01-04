@@ -91,15 +91,36 @@ void UserManager::getXDGConfig(User& user)
 
     QStringList configDirsList = configDirs.split(QLatin1Char(':'));
     Q_FOREACH(const QString & singleDir, configDirsList) {
-      QString dir(singleDir);
-      if(!profiles.contains(dir)){
-	Profile pf(dir);
-	profiles.insert(dir, pf);
-      }
-      user.addProfile(profiles.value(dir));
+        if (singleDir.isEmpty()) {
+            continue;
+        }
+        QString dir(singleDir);
+        if (!profiles.contains(dir)) {
+            qDebug() << dir;
+            Profile pf(dir);
+            profiles.insert(dir, pf);
+        }
+        user.addProfile(profiles.value(dir));
     }
 
     user.setXDG_CONFIG_HOME(configHome);
 }
 
+QStringList UserManager::getUserNames()
+{
+    QStringList userNames;
+    Q_FOREACH(const User & user, users) {
+        userNames << user.getName();
+    }
+    return userNames;
+}
 
+QStringList UserManager::getProfileNames()
+{
+    QStringList profileNames;
+    Q_FOREACH(const Profile & profile, profiles.values()) {
+        profileNames << profile.getName();
+    }
+
+    return profileNames;
+}

@@ -44,7 +44,7 @@ User::~User()
 
 }
 
-QString User::getName()
+QString User::getName() const
 {
     return name;
 }
@@ -76,7 +76,7 @@ void User::setEnvironmentVariableFile(QString& varFile)
 
 void User::addProfile(const Profile& profile)
 {
-  profiles.append(profile);
+    profiles.append(profile);
 }
 
 void User::save()
@@ -97,15 +97,15 @@ void User::save()
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         return;
     }
-    
+
     QString configDirs;
     QStringList helperList;
     Q_FOREACH(const Profile & pf, profiles) {
-      helperList << pf.getDirectory();
+        helperList << pf.getDirectory();
     }
-    
+
     configDirs = helperList.join(QLatin1Char(':'));
-    
+
     QStringList fileContent;
     bool hasConfigDirs = false;
     bool hasConfigHome = false;

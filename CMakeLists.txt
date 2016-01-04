@@ -31,9 +31,11 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
  
 set(confine_SRCS src/main.cpp src/mainwindow.cpp src/profilemanager.cpp src/profile.cpp src/usermanager.cpp src/user.cpp)
- 
+
+qt5_wrap_ui(confine_UI src/mainwindow.ui)
+
 # just plain add_executable
-add_executable(confine ${confine_SRCS})
+add_executable(confine ${confine_SRCS} ${confine_UI})
  
 # module-based linking
 target_link_libraries(confine

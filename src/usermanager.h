@@ -36,7 +36,8 @@ UserManager();
 ~UserManager();
 void getXDGConfig(User& user);
 void setXDGConfig(User& user, QString& configDirs, QString& configHome);
-
+QStringList getUserNames();
+QStringList getProfileNames();
 
 private:
   QList<User> users;

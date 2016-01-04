@@ -31,9 +31,9 @@ Profile::Profile()
 
 }
 
-Profile::Profile(QString& profileDir)
+Profile::Profile(QString& profileDir) : name(profileDir), directory(profileDir)
 {
-    Profile(profileDir, profileDir);
+
 }
 
 Profile::Profile(QString& profileDir, QString& profileName) : name(profileName), directory(profileDir)
@@ -48,9 +48,13 @@ Profile::~Profile()
 
 QString Profile::getDirectory() const
 {
-  return directory;
+    return directory;
 }
 
+QString Profile::getName() const
+{
+    return name;
+}
 
 QStringList Profile::getKDEActionRestrictions()
 {
