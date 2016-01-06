@@ -39,6 +39,11 @@ User::User(QString& userName, QString& userShell, QString& userHomeDir) : name(u
 
 }
 
+User::User()
+{
+
+}
+
 User::~User()
 {
 
@@ -137,4 +142,9 @@ void User::save()
     file.flush();
     file.close();
 
+}
+
+QList<Profile> User::getProfiles()
+{
+  return profiles;
 }

@@ -34,18 +34,17 @@ class UserManager
 public:
 UserManager();
 ~UserManager();
-void getXDGConfig(User& user);
-void setXDGConfig(User& user, QString& configDirs, QString& configHome);
 QStringList getUserNames();
 QStringList getProfileNames();
+QList<Profile> getProfilesfromUser(QString& userName);
 
 private:
-  QList<User> users;
+  QHash<QString, User> users;
   QHash<QString, Profile> profiles;
   QString XDG_CONFIG_DIRS;
   QString XDG_CONFIG_HOME;
   void getUsersOnSystem();
-  
+  void getXDGConfig(User& user);
 };
 
 #endif // USERMANAGER_H

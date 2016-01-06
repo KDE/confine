@@ -26,14 +26,44 @@
 
 #include <KLocalizedString>
 
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
-    UserManager um;
-
     ui.setupUi(this);
-    ui.tabWidget->setTabText(0, i18n("Users"));
-    ui.tabWidget->setTabText(1, i18n("Profiles"));
+    ui.tabWidget->setCurrentIndex(0);
+
     ui.userList->addItems(um.getUserNames());
     ui.profileList->addItems(um.getProfileNames());
-    ui.tabWidget->setCurrentIndex(0);
+
+    Q_FOREACH(const QString & profileName, um.getProfileNames()) {
+        QListWidgetItem* item = new QListWidgetItem(ui.profileListForUser);
+        item->setData(Qt::DisplayRole, profileName);
+        item->setData(Qt::CheckStateRole, Qt::Unchecked);
+    }
+
+    connect(ui.userList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(fillUserData(QListWidgetItem*)));
+
 }
+
+
+void MainWindow::fillUserData(QListWidgetItem* userNameItem)
+{
+    QString userName = userNameItem->data(Qt::DisplayRole).toString();
+    QList<Profile> pfList = um.getProfilesfromUser(userName);
+    QStringList profileNames;
+    Q_FOREACH(const Profile & profile, pfList) {
+        profileNames << profile.getName();
+    }
+    for (int row = 0; row < ui.profileListForUser->count(); row++) {
+        QListWidgetItem* item = ui.profileListForUser->item(row);
+        QString profileName = item->data(Qt::DisplayRole).toString();
+        if (profileNames.contains(profileName)) {
+            item->setData(Qt::CheckStateRole, Qt::Checked);
+        } else {
+            item->setData(Qt::CheckStateRole, Qt::Unchecked);
+        }
+
+    }
+}
+

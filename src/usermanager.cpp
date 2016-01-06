@@ -57,7 +57,7 @@ void UserManager::getUsersOnSystem()
         QString shell =  QString::fromLocal8Bit(pwd_entry->pw_shell);
         User userEntry(name, shell, homeDir);
         getXDGConfig(userEntry);
-        users.append(userEntry);
+        users.insert(userEntry.getName(), userEntry);
     }
     fclose(fpwd);
 }
@@ -96,7 +96,6 @@ void UserManager::getXDGConfig(User& user)
         }
         QString dir(singleDir);
         if (!profiles.contains(dir)) {
-            qDebug() << dir;
             Profile pf(dir);
             profiles.insert(dir, pf);
         }
@@ -109,7 +108,7 @@ void UserManager::getXDGConfig(User& user)
 QStringList UserManager::getUserNames()
 {
     QStringList userNames;
-    Q_FOREACH(const User & user, users) {
+    Q_FOREACH(const User & user, users.values()) {
         userNames << user.getName();
     }
     return userNames;
@@ -124,3 +123,10 @@ QStringList UserManager::getProfileNames()
 
     return profileNames;
 }
+
+QList< Profile > UserManager::getProfilesfromUser(QString& userName)
+{
+    User user = users.value(userName);
+    return user.getProfiles();
+}
+

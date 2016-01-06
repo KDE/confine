@@ -29,7 +29,8 @@
 
 class User
 {
-public:   
+public:
+  User();
   User(QString& userName, QString& userShell, QString& userHomeDir);
   ~User();
   QString getName() const;
@@ -42,6 +43,7 @@ public:
   void setEnvironmentVariableFile(QString& varFile);
   void save();
   void addProfile(const Profile& profile);
+  QList<Profile> getProfiles();
   
 private:
   QString name;

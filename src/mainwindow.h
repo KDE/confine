@@ -22,6 +22,8 @@
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+#include "usermanager.h"
  
 #include <KXmlGuiWindow>
 
@@ -29,11 +31,18 @@
 
 class MainWindow : public KXmlGuiWindow
 {
+  Q_OBJECT
+  
   public:
     explicit MainWindow(QWidget *parent=0);
-    
+  
+public Q_SLOTS:
+  void fillUserData(QListWidgetItem* userNameItem);
+
 private:
   Ui::MainWindow ui;
+  
+  UserManager um;
 };
  
 #endif
