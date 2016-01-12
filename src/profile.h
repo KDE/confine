@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2016  <copyright holder> <email>
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,15 +28,16 @@
 class Profile
 {
 public:
-Profile();
-explicit Profile(QString& profileDir);
-Profile(QString& profileDir, QString& profileName);
-~Profile();
-QStringList getKDEActionRestrictions();
-void setKDEActionRestriction(QString& key, QString& value);
-QString getDirectory() const;
-QString getName() const;
-
+  Profile();
+  explicit Profile(QString& profileDir);
+  Profile(QString& profileDir, QString& profileName);
+  ~Profile();
+  QStringList getKDEActionRestrictions();
+  void setKDEActionRestriction(QString& key, QString& value);
+  QString getDirectory() const;
+  QString getName() const;
+  
+  
 private:
   QString name;
   QString directory;
