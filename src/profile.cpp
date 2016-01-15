@@ -26,6 +26,9 @@
 #include <ksharedconfig.h>
 #include <kconfigbase.h>
 
+#include <QDir>
+#include <QDebug>
+
 Profile::Profile()
 {
 
@@ -33,12 +36,12 @@ Profile::Profile()
 
 Profile::Profile(QString& profileDir) : name(profileDir), directory(profileDir)
 {
-
+refreshConfigurationFilesFromProfile();
 }
 
 Profile::Profile(QString& profileDir, QString& profileName) : name(profileName), directory(profileDir)
 {
-
+refreshConfigurationFilesFromProfile();
 }
 
 Profile::~Profile()
@@ -56,6 +59,12 @@ QString Profile::getName() const
     return name;
 }
 
+QStringList Profile::getConfigFiles()
+{
+  return configurationFiles;
+}
+
+
 QStringList Profile::getKDEActionRestrictions()
 {
     KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals");
@@ -70,4 +79,12 @@ void Profile::setKDEActionRestriction(QString& key, QString& value)
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
     }
+}
+
+void Profile::refreshConfigurationFilesFromProfile()
+{
+  configurationFiles.clear();
+  QDir profileDir(directory);
+  QStringList allConfigFiles = profileDir.entryList();
+
 }

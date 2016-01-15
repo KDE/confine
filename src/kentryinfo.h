@@ -20,31 +20,25 @@
  * 
  */
 
-#ifndef PROFILE_H
-#define PROFILE_H
+#ifndef KENTRYINFO_H
+#define KENTRYINFO_H
 
 #include <QString>
-#include <QStringList>
 
-class Profile
+class KEntryInfo
 {
 public:
-  Profile();
-  explicit Profile(QString& profileDir);
-  Profile(QString& profileDir, QString& profileName);
-  ~Profile();
-  QStringList getKDEActionRestrictions();
-  void setKDEActionRestriction(QString& key, QString& value);
-  QStringList getConfigFiles();
-  QString getDirectory() const;
-  QString getName() const;
-  
+  KEntryInfo(QString& name, QString& type, QString& label);
+  ~KEntryInfo();
+  QString getName();
+  QString getType();
+  QString getLabel();
   
 private:
-  void refreshConfigurationFilesFromProfile();
   QString name;
-  QString directory;
-  QStringList configurationFiles;
+  QString type;
+  QString label;
+  
 };
 
-#endif // PROFILE_H
+#endif // KENTRYINFO_H

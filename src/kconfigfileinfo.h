@@ -20,31 +20,21 @@
  * 
  */
 
-#ifndef PROFILE_H
-#define PROFILE_H
+#ifndef KCONFIGFILEINFO_H
+#define KCONFIGFILEINFO_H
 
-#include <QString>
-#include <QStringList>
+#include "kgroupinfo.h"
 
-class Profile
+class KConfigFileInfo
 {
 public:
-  Profile();
-  explicit Profile(QString& profileDir);
-  Profile(QString& profileDir, QString& profileName);
-  ~Profile();
-  QStringList getKDEActionRestrictions();
-  void setKDEActionRestriction(QString& key, QString& value);
-  QStringList getConfigFiles();
-  QString getDirectory() const;
-  QString getName() const;
-  
+  KConfigFileInfo();
+  explicit KConfigFileInfo(QString& cfgName);
+  ~KConfigFileInfo();
   
 private:
-  void refreshConfigurationFilesFromProfile();
-  QString name;
-  QString directory;
-  QStringList configurationFiles;
+  QString configName;
+  QHash<QString, KGroupInfo> groups;
 };
 
-#endif // PROFILE_H
+#endif // KCONFIGFILEINFO_H

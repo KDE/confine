@@ -20,31 +20,26 @@
  * 
  */
 
-#ifndef PROFILE_H
-#define PROFILE_H
+#ifndef CONFIGXTREADER_H
+#define CONFIGXTREADER_H
 
-#include <QString>
-#include <QStringList>
+#include "kconfigfileinfo.h"
 
-class Profile
+#include <QFile>
+#include <QDomElement>
+
+class ConfigXTReader
 {
 public:
-  Profile();
-  explicit Profile(QString& profileDir);
-  Profile(QString& profileDir, QString& profileName);
-  ~Profile();
-  QStringList getKDEActionRestrictions();
-  void setKDEActionRestriction(QString& key, QString& value);
-  QStringList getConfigFiles();
-  QString getDirectory() const;
-  QString getName() const;
-  
+  ConfigXTReader();
+  ~ConfigXTReader();
   
 private:
-  void refreshConfigurationFilesFromProfile();
-  QString name;
-  QString directory;
-  QStringList configurationFiles;
+  QHash<QString, KConfigFileInfo> configurationFilesInfos;
+  
+  void parseKcfgFile(QFile& file);
+  void parseGroupElement(QDomElement& grpElement, QString& configFileName);
+  
 };
 
-#endif // PROFILE_H
+#endif // CONFIGXTREADER_H
