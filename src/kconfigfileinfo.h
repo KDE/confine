@@ -30,7 +30,10 @@ class KConfigFileInfo
 public:
   KConfigFileInfo();
   explicit KConfigFileInfo(QString& cfgName);
-  ~KConfigFileInfo();
+  ~KConfigFileInfo(); 
+  void addKGroupInfo(KGroupInfo& kGroupInfo);
+  QString getName();
+  KGroupInfo getKGroupInfo(QString& name);
   
 private:
   QString configName;

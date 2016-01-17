@@ -37,3 +37,20 @@ KConfigFileInfo::~KConfigFileInfo()
 {
 
 }
+
+KGroupInfo KConfigFileInfo::getKGroupInfo(QString& name)
+{
+  return groups.value(name);
+}
+
+void KConfigFileInfo::addKGroupInfo(KGroupInfo& kGroupInfo)
+{
+  groups.insert(kGroupInfo.getName(), kGroupInfo);
+}
+
+QString KConfigFileInfo::getName()
+{
+  return configName;
+}
+
+

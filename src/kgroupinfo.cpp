@@ -22,6 +22,11 @@
 
 #include "kgroupinfo.h"
 
+KGroupInfo::KGroupInfo()
+{
+
+}
+
 KGroupInfo::KGroupInfo(QString& grpName) : groupName(grpName)
 {
 
@@ -40,5 +45,10 @@ void KGroupInfo::addKEntryInfo(KEntryInfo& kEntryInfo)
 QString KGroupInfo::getName()
 {
   return groupName;
+}
+
+KEntryInfo KGroupInfo::getKEntryInfo(QString& name)
+{
+  return entries.value(name);
 }
 

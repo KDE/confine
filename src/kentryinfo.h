@@ -28,7 +28,8 @@
 class KEntryInfo
 {
 public:
-  KEntryInfo(QString& name, QString& type, QString& label);
+  KEntryInfo();
+  explicit KEntryInfo(QString& name, QString& type, QString& label);
   ~KEntryInfo();
   QString getName();
   QString getType();

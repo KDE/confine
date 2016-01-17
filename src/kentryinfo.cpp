@@ -22,6 +22,11 @@
 
 #include "kentryinfo.h"
 
+KEntryInfo::KEntryInfo()
+{
+
+}
+
 KEntryInfo::KEntryInfo(QString& nameEntry, QString& typeEntry, QString& labelEntry) : name(nameEntry), type(typeEntry), label(labelEntry)
 {
 

@@ -78,7 +78,8 @@ void ConfigXTReader::parseKcfgFile(QFile& file)
 void ConfigXTReader::parseGroupElement(QDomElement& grpElement, QString& configFileName)
 {
     QDomNodeList entries = grpElement.childNodes();
-    KGroupInfo kGrpInfo(configFileName);
+    QString grpName = grpElement.attributes().namedItem("name").toAttr().value();
+    KGroupInfo kGrpInfo(grpName);
     KConfigFileInfo kConfigInfo(configFileName);
     if (configurationFilesInfos.contains(configFileName)) {
         kConfigInfo = configurationFilesInfos.value(configFileName);
@@ -94,5 +95,5 @@ void ConfigXTReader::parseGroupElement(QDomElement& grpElement, QString& configF
         KEntryInfo kInfo(name, type, infoLabel);
         kGrpInfo.addKEntryInfo(kInfo);
     }
-
+    kConfigInfo.addKGroupInfo(kGrpInfo);
 }
