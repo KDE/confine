@@ -23,7 +23,9 @@
 #include "configxtreader.h"
 #include "kgroupinfo.h"
 #include "kentryinfo.h"
+#include "confineconfiguration.h"
 
+#include <QtCore>
 #include <QFile>
 #include <QDir>
 #include <QDomDocument>
@@ -31,11 +33,12 @@
 
 ConfigXTReader::ConfigXTReader()
 {
-    QDir profileDir("/usr/share/config.kcfg");
+    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
+    QDir profileDir(cf->getConfigXTDir());
     QStringList nameFilter("*.kcfg");
     QStringList allConfigFiles = profileDir.entryList(nameFilter);
     for (int i = 0; i < allConfigFiles.size(); i++) {
-        QFile file("/usr/share/config.kcfg/" + allConfigFiles.at(i));
+        QFile file(cf->getConfigXTDir() + allConfigFiles.at(i));
         qDebug() << allConfigFiles.at(i);
         parseKcfgFile(file);
     }

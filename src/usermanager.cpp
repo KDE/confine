@@ -23,6 +23,7 @@
 #include "usermanager.h"
 #include "user.h"
 #include "profile.h"
+#include "confineconfiguration.h"
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -30,7 +31,9 @@
 #include <QFile>
 #include <QList>
 #include <QDir>
+#include <QtCore>
 #include <QDebug>
+
 
 UserManager::UserManager()
 {
@@ -47,9 +50,10 @@ UserManager::~UserManager()
 void UserManager::getUsersOnSystem()
 {
     users.clear();
+    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
     //TODO:check if /etc/passwd really exists
     struct passwd* pwd_entry;
-    FILE* fpwd = fopen(QFile::encodeName("/etc/passwd"), "r");
+    FILE* fpwd = fopen(QFile::encodeName(cf->getPasswdPath()), "r");
 
     while ((pwd_entry = fgetpwent(fpwd)) != NULL) {
         QString name = QString::fromLocal8Bit(pwd_entry->pw_name);

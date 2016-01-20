@@ -27,6 +27,7 @@
 #include <KLocalizedString>
 
 #include "mainwindow.h"
+#include "confineconfiguration.h"
 
 int main(int argc, char* argv[])
 {
@@ -53,6 +54,9 @@ int main(int argc, char* argv[])
     parser.process(app);
     aboutData.processCommandLine(&parser);
 
+    ConfineConfiguration* confineConfiguration = new ConfineConfiguration();
+    app.setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
+    
     MainWindow* window = new MainWindow();
     window->show();
 
