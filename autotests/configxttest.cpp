@@ -20,37 +20,29 @@
  *
  */
 
+#include "configxttest.h"
+#include "confineconfiguration.h"
+#include "configxtreader.h"
 #include "kconfigfileinfo.h"
 
-KConfigFileInfo::KConfigFileInfo()
-{
+#include <QtTest>
+#include <QtCore>
+#include <QDebug>
 
+QTEST_MAIN(ConfigXTTest)
+
+
+void ConfigXTTest::testConfig()
+{
+    ConfineConfiguration* confineConfiguration = new ConfineConfiguration();
+    confineConfiguration->setConfigXTDir(QDir::currentPath() + QLatin1String("/autotests/data"));
+    qApp->setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
+
+    ConfigXTReader configReader;
+    QHash<QString, KConfigFileInfo> infos = configReader.getConfigurationFilesInfos();
+
+    QVERIFY(infos.contains(QLatin1String("kjotsrc")));
+    QCOMPARE(infos.size(), 1);
 }
 
-KConfigFileInfo::KConfigFileInfo(QString& cfgName) : configName(cfgName)
-{
-
-}
-
-
-KConfigFileInfo::~KConfigFileInfo()
-{
-
-}
-
-KGroupInfo KConfigFileInfo::getKGroupInfo(QString& name)
-{
-  return groups.value(name);
-}
-
-void KConfigFileInfo::addKGroupInfo(KGroupInfo& kGroupInfo)
-{
-  groups.insert(kGroupInfo.getName(), kGroupInfo);
-}
-
-QString KConfigFileInfo::getName() const
-{
-  return configName;
-}
-
-
+#include "configxttest.moc"

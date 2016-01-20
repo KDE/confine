@@ -33,11 +33,12 @@ class ConfigXTReader
 public:
   ConfigXTReader();
   ~ConfigXTReader();
+  QHash<QString, KConfigFileInfo> getConfigurationFilesInfos();
   
 private:
   QHash<QString, KConfigFileInfo> configurationFilesInfos;
   
-  void parseKcfgFile(QFile& file);
+  void parseKcfgFile(const QString& filePath);
   void parseGroupElement(QDomElement& grpElement, QString& configFileName);
   
 };

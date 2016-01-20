@@ -38,9 +38,7 @@ ConfigXTReader::ConfigXTReader()
     QStringList nameFilter("*.kcfg");
     QStringList allConfigFiles = profileDir.entryList(nameFilter);
     for (int i = 0; i < allConfigFiles.size(); i++) {
-        QFile file(cf->getConfigXTDir() + allConfigFiles.at(i));
-        qDebug() << allConfigFiles.at(i);
-        parseKcfgFile(file);
+        parseKcfgFile(cf->getConfigXTDir() + allConfigFiles.at(i));
     }
 
 }
@@ -50,9 +48,10 @@ ConfigXTReader::~ConfigXTReader()
 
 }
 
-void ConfigXTReader::parseKcfgFile(QFile& file)
+void ConfigXTReader::parseKcfgFile(const QString& filePath)
 {
     QDomDocument doc;
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly) || !doc.setContent(&file))
         return;
 
@@ -99,4 +98,13 @@ void ConfigXTReader::parseGroupElement(QDomElement& grpElement, QString& configF
         kGrpInfo.addKEntryInfo(kInfo);
     }
     kConfigInfo.addKGroupInfo(kGrpInfo);
+    if (!configurationFilesInfos.contains(configFileName)) {
+        configurationFilesInfos.insert(configFileName, kConfigInfo);
+    }
 }
+
+QHash< QString, KConfigFileInfo > ConfigXTReader::getConfigurationFilesInfos()
+{
+  return configurationFilesInfos;
+}
+

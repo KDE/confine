@@ -22,7 +22,7 @@
 
 #include "confineconfiguration.h"
 
-ConfineConfiguration::ConfineConfiguration() : passwdPath("/etc/passwd"), configxtDir("/usr/share/config.kcfg")
+ConfineConfiguration::ConfineConfiguration() : passwdPath("/etc/passwd"), configxtDir("/usr/share/config.kcfg/")
 {
   
 }
@@ -40,6 +40,10 @@ QString ConfineConfiguration::getConfigXTDir()
 void ConfineConfiguration::setConfigXTDir(const QString& configDir)
 {
   configxtDir = configDir;
+  if(!configxtDir.endsWith(QLatin1Char('/'))) {
+    configxtDir += QLatin1Char('/');
+  }
+    
 }
 
 void ConfineConfiguration::setPasswdPath(const QString& passwd)

@@ -30,12 +30,29 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
  
-set(confine_SRCS src/main.cpp src/mainwindow.cpp src/profilemanager.cpp src/profile.cpp src/usermanager.cpp src/user.cpp src/configxtreader.cpp src/kgroupinfo.cpp src/kentryinfo.cpp src/kconfigfileinfo.cpp)
+set(confineBase_SRCS 
+  ${CMAKE_SOURCE_DIR}/src/profilemanager.cpp 
+  ${CMAKE_SOURCE_DIR}/src/profile.cpp 
+  ${CMAKE_SOURCE_DIR}/src/usermanager.cpp 
+  ${CMAKE_SOURCE_DIR}/src/user.cpp 
+  ${CMAKE_SOURCE_DIR}/src/configxtreader.cpp 
+  ${CMAKE_SOURCE_DIR}/src/kgroupinfo.cpp 
+  ${CMAKE_SOURCE_DIR}/src/kentryinfo.cpp 
+  ${CMAKE_SOURCE_DIR}/src/kconfigfileinfo.cpp 
+  ${CMAKE_SOURCE_DIR}/src/confineconfiguration.cpp
+)
 
-qt5_wrap_ui(confine_UI src/mainwindow.ui)
+set(confineUI_SRCS 
+  ${CMAKE_SOURCE_DIR}/src/main.cpp 
+  ${CMAKE_SOURCE_DIR}/src/mainwindow.cpp 
+)
+
+qt5_wrap_ui(confine_UI ${CMAKE_SOURCE_DIR}/src/mainwindow.ui)
+
+add_subdirectory(autotests)
 
 # just plain add_executable
-add_executable(confine ${confine_SRCS} ${confine_UI})
+add_executable(confine ${confineBase_SRCS} ${confineUI_SRCS} ${confine_UI})
  
 # module-based linking
 target_link_libraries(confine

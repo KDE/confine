@@ -32,7 +32,7 @@ public:
   explicit KConfigFileInfo(QString& cfgName);
   ~KConfigFileInfo(); 
   void addKGroupInfo(KGroupInfo& kGroupInfo);
-  QString getName();
+  QString getName() const;
   KGroupInfo getKGroupInfo(QString& name);
   
 private:
