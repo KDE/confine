@@ -21,8 +21,7 @@
  */
 
 #include "mainwindow.h"
-#include "profilemanager.h"
-#include "usermanager.h"
+#include "userprofilemanager.h"
 
 #include <KLocalizedString>
 

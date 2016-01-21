@@ -23,7 +23,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "usermanager.h"
+#include "userprofilemanager.h"
  
 #include <KXmlGuiWindow>
 
@@ -42,7 +42,7 @@ public Q_SLOTS:
 private:
   Ui::MainWindow ui;
   
-  UserManager um;
+  UserProfileManager um;
 };
  
 #endif

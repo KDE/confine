@@ -31,9 +31,8 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
  
 set(confineBase_SRCS 
-  ${CMAKE_SOURCE_DIR}/src/profilemanager.cpp 
   ${CMAKE_SOURCE_DIR}/src/profile.cpp 
-  ${CMAKE_SOURCE_DIR}/src/usermanager.cpp 
+  ${CMAKE_SOURCE_DIR}/src/userprofilemanager.cpp 
   ${CMAKE_SOURCE_DIR}/src/user.cpp 
   ${CMAKE_SOURCE_DIR}/src/configxtreader.cpp 
   ${CMAKE_SOURCE_DIR}/src/kgroupinfo.cpp 

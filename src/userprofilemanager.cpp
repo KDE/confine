@@ -20,7 +20,7 @@
  *
  */
 
-#include "usermanager.h"
+#include "userprofilemanager.h"
 #include "user.h"
 #include "profile.h"
 #include "confineconfiguration.h"
@@ -35,19 +35,19 @@
 #include <QDebug>
 
 
-UserManager::UserManager()
+UserProfileManager::UserProfileManager()
 {
     XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
     XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
 }
 
-UserManager::~UserManager()
+UserProfileManager::~UserProfileManager()
 {
 
 }
 
-void UserManager::getUsersOnSystem()
+void UserProfileManager::getUsersOnSystem()
 {
     users.clear();
     ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
@@ -66,7 +66,7 @@ void UserManager::getUsersOnSystem()
     fclose(fpwd);
 }
 
-void UserManager::getXDGConfig(User& user)
+void UserProfileManager::getXDGConfig(User& user)
 {
     if (user.getHomeDir().isEmpty() || !QFile::exists(user.getHomeDir())) {
         return;
@@ -109,7 +109,7 @@ void UserManager::getXDGConfig(User& user)
     user.setXDG_CONFIG_HOME(configHome);
 }
 
-QStringList UserManager::getUserNames()
+QStringList UserProfileManager::getUserNames()
 {
     QStringList userNames;
     Q_FOREACH(const User & user, users.values()) {
@@ -118,7 +118,7 @@ QStringList UserManager::getUserNames()
     return userNames;
 }
 
-QStringList UserManager::getProfileNames()
+QStringList UserProfileManager::getProfileNames()
 {
     QStringList profileNames;
     Q_FOREACH(const Profile & profile, profiles.values()) {
@@ -128,7 +128,7 @@ QStringList UserManager::getProfileNames()
     return profileNames;
 }
 
-QList< Profile > UserManager::getProfilesfromUser(QString& userName)
+QList< Profile > UserProfileManager::getProfilesfromUser(QString& userName)
 {
     User user = users.value(userName);
     return user.getProfiles();

@@ -20,22 +20,31 @@
  * 
  */
 
-#ifndef PROFILEMANAGER_H
-#define PROFILEMANAGER_H
+#ifndef USERMANAGER_H
+#define USERMANAGER_H
 
-#include <KConfig>
+#include "user.h"
+#include "profile.h"
 
-class ProfileManager
+#include <QList>
+#include <QHash>
+
+class UserProfileManager
 {
-  public:
-    ProfileManager();
-    QStringList allProfiles();
-    QString getProfilePrefix();
-    QString newProfile();
-    void addUser(const QString &profileName, const QString &userName);
-    void addGroup(const QString& profileName, const QString& groupName);
-    QString getUserMappingList();
-    void createProfile(const QString &name);
+public:
+UserProfileManager();
+~UserProfileManager();
+QStringList getUserNames();
+QStringList getProfileNames();
+QList<Profile> getProfilesfromUser(QString& userName);
+
+private:
+  QHash<QString, User> users;
+  QHash<QString, Profile> profiles;
+  QString XDG_CONFIG_DIRS;
+  QString XDG_CONFIG_HOME;
+  void getUsersOnSystem();
+  void getXDGConfig(User& user);
 };
 
-#endif // PROFILEMANAGER_H
+#endif // USERMANAGER_H
