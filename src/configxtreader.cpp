@@ -25,7 +25,7 @@
 #include "kentryinfo.h"
 #include "confineconfiguration.h"
 
-#include <QtCore>
+#include <QApplication>
 #include <QFile>
 #include <QDir>
 #include <QDomDocument>

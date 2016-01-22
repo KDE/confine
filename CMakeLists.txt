@@ -39,6 +39,7 @@ set(confineBase_SRCS
   ${CMAKE_SOURCE_DIR}/src/kentryinfo.cpp 
   ${CMAKE_SOURCE_DIR}/src/kconfigfileinfo.cpp 
   ${CMAKE_SOURCE_DIR}/src/confineconfiguration.cpp
+  ${CMAKE_SOURCE_DIR}/src/configurationinfomanager
 )
 
 set(confineUI_SRCS 

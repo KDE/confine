@@ -31,7 +31,7 @@
 #include <QFile>
 #include <QList>
 #include <QDir>
-#include <QtCore>
+#include <QApplication>
 #include <QDebug>
 
 

@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  Gilbert Assaf <gassaf@gmx.de>
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,31 +20,21 @@
  * 
  */
 
-#ifndef USERPROFILEMANAGER_H
-#define USERPROFILEMANAGER_H
+#ifndef CONFIGURATIONINFOMANAGER_H
+#define CONFIGURATIONINFOMANAGER_H
 
-#include "user.h"
-#include "profile.h"
+#include "kconfigfileinfo.h"
 
-#include <QList>
-#include <QHash>
+#include <kconfiggroup.h>
 
-class UserProfileManager
+class ConfigurationInfoManager
 {
 public:
-UserProfileManager();
-~UserProfileManager();
-QStringList getUserNames();
-QStringList getProfileNames();
-QList<Profile> getProfilesfromUser(QString& userName);
-
+  ConfigurationInfoManager();
+  QString getInfo(const KConfigGroup& grp, const QString& entryKey);
+  
 private:
-  QHash<QString, User> users;
-  QHash<QString, Profile> profiles;
-  QString XDG_CONFIG_DIRS;
-  QString XDG_CONFIG_HOME;
-  void getUsersOnSystem();
-  void getXDGConfig(User& user);
+  QHash<QString, KConfigFileInfo> configurationFilesInfos;
 };
 
-#endif // USERMANAGER_H
+#endif // CONFIGURATIONINFOMANAGER_H

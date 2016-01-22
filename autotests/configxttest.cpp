@@ -21,16 +21,24 @@
  */
 
 #include "configxttest.h"
+#include "kentryinfo.h"
+#include "kgroupinfo.h"
+#include "kconfigfileinfo.h"
 #include "confineconfiguration.h"
 #include "configxtreader.h"
 #include "kconfigfileinfo.h"
+#include "configurationinfomanager.h"
 
 #include <QtTest>
 #include <QtCore>
 #include <QDebug>
+#include <KConfig>
+#include <KConfigGroup>
+#include <ksharedconfig.h>
+#include <kconfigbase.h>
+#include <kconfiggroup.h>
 
 QTEST_MAIN(ConfigXTTest)
-
 
 void ConfigXTTest::testConfig()
 {
@@ -43,6 +51,25 @@ void ConfigXTTest::testConfig()
 
     QVERIFY(infos.contains(QLatin1String("kjotsrc")));
     QCOMPARE(infos.size(), 1);
+    KConfigFileInfo ki = infos.value(QLatin1String("kjotsrc"));
+    KGroupInfo gi = ki.getKGroupInfo(QLatin1String("kjots"));
+    QCOMPARE(gi.getName(), QLatin1String("kjots"));
+
+    KEntryInfo kei = gi.getKEntryInfo(QLatin1String("OpenBooks"));
+
+    QCOMPARE(kei.getLabel(), QLatin1String("All books that are opened."));
+
 }
+
+void ConfigXTTest::testInfoManager()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QDir::currentPath() + QLatin1String("/autotests/data/kjotsrc"));
+    KConfigGroup grp(config, "kjots");
+    ConfigurationInfoManager confInfo;
+    QCOMPARE(confInfo.getInfo(grp, QLatin1String("CurrentBook")), QLatin1String("The book currently opened."));
+    QCOMPARE(confInfo.getInfo(grp, QLatin1String("Height")), QLatin1String("Height of the main window."));
+    QCOMPARE(confInfo.getInfo(grp, QLatin1String("SplitterSizes")), QLatin1String("How the main window is divided."));
+}
+
 
 #include "configxttest.moc"

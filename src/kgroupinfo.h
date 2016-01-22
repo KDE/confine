@@ -36,7 +36,7 @@ public:
   ~KGroupInfo();
   void addKEntryInfo(KEntryInfo& kEntryInfo);
   QString getName();
-  KEntryInfo getKEntryInfo(QString& name);
+  KEntryInfo getKEntryInfo(const QString& name);
   
 private:
   QString groupName;

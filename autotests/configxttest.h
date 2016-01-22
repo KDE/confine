@@ -30,6 +30,7 @@ class ConfigXTTest : public QObject
     Q_OBJECT
 private slots:
     void testConfig();
+    void testInfoManager();
 };
 
 #endif // CONFIGXTTEST_H

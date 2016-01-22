@@ -39,16 +39,15 @@ KGroupInfo::~KGroupInfo()
 
 void KGroupInfo::addKEntryInfo(KEntryInfo& kEntryInfo)
 {
-  entries.insert(kEntryInfo.getName(), kEntryInfo);
+    entries.insert(kEntryInfo.getName(), kEntryInfo);
 }
 
 QString KGroupInfo::getName()
 {
-  return groupName;
+    return groupName;
 }
 
-KEntryInfo KGroupInfo::getKEntryInfo(QString& name)
+KEntryInfo KGroupInfo::getKEntryInfo(const QString& name)
 {
-  return entries.value(name);
+    return entries.value(name);
 }
-

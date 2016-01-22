@@ -1,7 +1,7 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  Gilbert Assaf <gassaf@gmx.de>
- * 
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
@@ -9,42 +9,34 @@
  * accepted by the membership of KDE e.V. (or its successor approved
  * by the membership of KDE e.V.), which shall act as a proxy
  * defined in Section 14 of version 3 of the license.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
-#ifndef USERPROFILEMANAGER_H
-#define USERPROFILEMANAGER_H
+#include "configurationinfomanager.h"
+#include "configxtreader.h"
 
-#include "user.h"
-#include "profile.h"
+#include <KConfig>
+#include <QFileInfo>
 
-#include <QList>
-#include <QHash>
-
-class UserProfileManager
+ConfigurationInfoManager::ConfigurationInfoManager()
 {
-public:
-UserProfileManager();
-~UserProfileManager();
-QStringList getUserNames();
-QStringList getProfileNames();
-QList<Profile> getProfilesfromUser(QString& userName);
+  ConfigXTReader configReader;
+  configurationFilesInfos = configReader.getConfigurationFilesInfos();
+}
 
-private:
-  QHash<QString, User> users;
-  QHash<QString, Profile> profiles;
-  QString XDG_CONFIG_DIRS;
-  QString XDG_CONFIG_HOME;
-  void getUsersOnSystem();
-  void getXDGConfig(User& user);
-};
-
-#endif // USERMANAGER_H
+QString ConfigurationInfoManager::getInfo(const KConfigGroup& grp, const QString& entryKey)
+{
+    QFileInfo configPath(grp.config()->name());
+    KConfigFileInfo kConfigFileInfo = configurationFilesInfos.value(configPath.fileName());
+    KGroupInfo kGroupInfo = kConfigFileInfo.getKGroupInfo(grp.name());
+    KEntryInfo kEntryInfo = kGroupInfo.getKEntryInfo(entryKey);
+    return kEntryInfo.getLabel();
+}

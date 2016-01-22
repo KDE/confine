@@ -38,19 +38,17 @@ KConfigFileInfo::~KConfigFileInfo()
 
 }
 
-KGroupInfo KConfigFileInfo::getKGroupInfo(QString& name)
+KGroupInfo KConfigFileInfo::getKGroupInfo(const QString& name)
 {
-  return groups.value(name);
+    return groups.value(name);
 }
 
 void KConfigFileInfo::addKGroupInfo(KGroupInfo& kGroupInfo)
 {
-  groups.insert(kGroupInfo.getName(), kGroupInfo);
+    groups.insert(kGroupInfo.getName(), kGroupInfo);
 }
 
 QString KConfigFileInfo::getName() const
 {
-  return configName;
+    return configName;
 }
-
-
