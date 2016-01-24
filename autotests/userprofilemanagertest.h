@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  Gilbert Assaf <gassaf@gmx.de>
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,31 +20,16 @@
  * 
  */
 
-#ifndef USERPROFILEMANAGER_H
-#define USERPROFILEMANAGER_H
+#ifndef USERPROFILEMANAGERTEST_H
+#define USERPROFILEMANAGERTEST_H
 
-#include "user.h"
-#include "profile.h"
+#include <QtCore>
 
-#include <QList>
-#include <QHash>
-
-class UserProfileManager
+class UserProfileManagerTest : public QObject
 {
-public:
-UserProfileManager();
-~UserProfileManager();
-QStringList getUserNames();
-QStringList getProfileNames();
-QList<Profile> getProfilesfromUser(const QString& userName);
-
-private:
-  QHash<QString, User> users;
-  QHash<QString, Profile> profiles;
-  QString XDG_CONFIG_DIRS;
-  QString XDG_CONFIG_HOME;
-  void getUsersOnSystem();
-  void getXDGConfig(User& user);
+  Q_OBJECT
+private slots:
+  void testInitialization();
 };
 
-#endif // USERMANAGER_H
+#endif // USERPROFILEMANAGERTEST_H

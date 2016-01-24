@@ -43,9 +43,9 @@ QTEST_MAIN(ConfigXTTest)
 void ConfigXTTest::testConfig()
 {
     ConfineConfiguration* confineConfiguration = new ConfineConfiguration();
-    confineConfiguration->setConfigXTDir(QDir::currentPath() + QLatin1String("/autotests/data"));
+    confineConfiguration->setConfigXTDir(QDir::currentPath() + QLatin1String("/data"));
     qApp->setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
-
+    
     ConfigXTReader configReader;
     QHash<QString, KConfigFileInfo> infos = configReader.getConfigurationFilesInfos();
 
@@ -63,12 +63,14 @@ void ConfigXTTest::testConfig()
 
 void ConfigXTTest::testInfoManager()
 {
-    KSharedConfigPtr config = KSharedConfig::openConfig(QDir::currentPath() + QLatin1String("/autotests/data/kjotsrc"));
+    KSharedConfigPtr config = KSharedConfig::openConfig(QDir::currentPath() + QLatin1String("/data/kjotsrc"));
     KConfigGroup grp(config, "kjots");
     ConfigurationInfoManager confInfo;
     QCOMPARE(confInfo.getInfo(grp, QLatin1String("CurrentBook")), QLatin1String("The book currently opened."));
     QCOMPARE(confInfo.getInfo(grp, QLatin1String("Height")), QLatin1String("Height of the main window."));
     QCOMPARE(confInfo.getInfo(grp, QLatin1String("SplitterSizes")), QLatin1String("How the main window is divided."));
+    QCOMPARE(confInfo.getInfo(grp, QLatin1String("DoesNotExist")), QString());
+    
 }
 
 

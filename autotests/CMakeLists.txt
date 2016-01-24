@@ -30,3 +30,7 @@ ecm_add_tests(
    LINK_LIBRARIES Qt5::Test autotests
 )
 
+ecm_add_tests(
+   userprofilemanagertest.cpp
+   LINK_LIBRARIES Qt5::Test autotests
+)

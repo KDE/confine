@@ -51,7 +51,11 @@ void UserProfileManager::getUsersOnSystem()
 {
     users.clear();
     ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
-    //TODO:check if /etc/passwd really exists
+
+    if(!QFile::exists(cf->getPasswdPath())) {
+      return;
+    }
+      
     struct passwd* pwd_entry;
     FILE* fpwd = fopen(QFile::encodeName(cf->getPasswdPath()), "r");
 
@@ -128,7 +132,7 @@ QStringList UserProfileManager::getProfileNames()
     return profileNames;
 }
 
-QList< Profile > UserProfileManager::getProfilesfromUser(QString& userName)
+QList< Profile > UserProfileManager::getProfilesfromUser(const QString& userName)
 {
     User user = users.value(userName);
     return user.getProfiles();
