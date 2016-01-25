@@ -52,10 +52,10 @@ void UserProfileManager::getUsersOnSystem()
     users.clear();
     ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
 
-    if(!QFile::exists(cf->getPasswdPath())) {
-      return;
+    if (!QFile::exists(cf->getPasswdPath())) {
+        return;
     }
-      
+
     struct passwd* pwd_entry;
     FILE* fpwd = fopen(QFile::encodeName(cf->getPasswdPath()), "r");
 
@@ -102,7 +102,12 @@ void UserProfileManager::getXDGConfig(User& user)
         if (singleDir.isEmpty()) {
             continue;
         }
+
         QString dir(singleDir);
+        if (!dir.endsWith(QLatin1Char('/'))) {
+            dir += QLatin1Char('/');
+        }
+
         if (!profiles.contains(dir)) {
             Profile pf(dir);
             profiles.insert(dir, pf);
@@ -137,4 +142,3 @@ QList< Profile > UserProfileManager::getProfilesfromUser(const QString& userName
     User user = users.value(userName);
     return user.getProfiles();
 }
-

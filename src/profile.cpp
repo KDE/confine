@@ -36,12 +36,12 @@ Profile::Profile()
 
 Profile::Profile(QString& profileDir) : name(profileDir), directory(profileDir)
 {
-refreshConfigurationFilesFromProfile();
+    refreshConfigurationFilesFromProfile();
 }
 
 Profile::Profile(QString& profileDir, QString& profileName) : name(profileName), directory(profileDir)
 {
-refreshConfigurationFilesFromProfile();
+    refreshConfigurationFilesFromProfile();
 }
 
 Profile::~Profile()
@@ -59,17 +59,17 @@ QString Profile::getName() const
     return name;
 }
 
-QStringList Profile::getConfigFiles()
+QStringList Profile::getConfigFiles() const
 {
-  return configurationFiles;
+    return configurationFiles;
 }
 
 
-QStringList Profile::getKDEActionRestrictions()
+QMap<QString, QString> Profile::getKDEActionRestrictions() const
 {
     KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals");
     KConfigGroup grp(config, "KDE Action Restrictions");
-    return grp.keyList();
+    return grp.entryMap();
 }
 
 void Profile::setKDEActionRestriction(QString& key, QString& value)
@@ -83,8 +83,7 @@ void Profile::setKDEActionRestriction(QString& key, QString& value)
 
 void Profile::refreshConfigurationFilesFromProfile()
 {
-  configurationFiles.clear();
-  QDir profileDir(directory);
-  QStringList allConfigFiles = profileDir.entryList();
-
+    configurationFiles.clear();
+    QDir profileDir(directory);
+    configurationFiles = profileDir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot);
 }

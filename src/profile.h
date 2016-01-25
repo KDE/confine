@@ -33,9 +33,9 @@ public:
   explicit Profile(QString& profileDir);
   Profile(QString& profileDir, QString& profileName);
   ~Profile();
-  QStringList getKDEActionRestrictions();
+  QMap<QString, QString> getKDEActionRestrictions() const;
   void setKDEActionRestriction(QString& key, QString& value);
-  QStringList getConfigFiles();
+  QStringList getConfigFiles() const;
   QString getDirectory() const;
   QString getName() const;
   

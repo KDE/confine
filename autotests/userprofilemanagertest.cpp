@@ -30,44 +30,57 @@ QTEST_MAIN(UserProfileManagerTest)
 
 void UserProfileManagerTest::testInitialization()
 {
-  ConfineConfiguration* confineConfiguration = new ConfineConfiguration();
-  confineConfiguration->setPasswdPath(QDir::currentPath() + QLatin1String("/data/passwd"));
-  qApp->setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
-  //create temporary test passwd file
-  QFile tmpFile(QDir::currentPath() + QLatin1String("/data/passwd"));
-  if (!tmpFile.open(QIODevice::WriteOnly | QIODevice::Text))
-    return;
-  QTextStream out(&tmpFile);
-  out << "kde-test:x:1001:1001::";
-  out << QDir::currentPath() + QLatin1String("/data");
-  out << ":/bin/bash\n";
-  
-  out.flush();
+    ConfineConfiguration* confineConfiguration = new ConfineConfiguration();
+    confineConfiguration->setPasswdPath(QDir::currentPath() + QLatin1String("/data/passwd"));
+    qApp->setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
+    //create temporary test passwd file
+    QFile tmpFile(QDir::currentPath() + QLatin1String("/data/passwd"));
+    if (!tmpFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&tmpFile);
+    out << "kde-test:x:1001:1001::";
+    out << QDir::currentPath() + QLatin1String("/data");
+    out << ":/bin/bash\n";
 
-  //create temporary test .profile file
-  QFile tmpFileProfile(QDir::currentPath() + QLatin1String("/data/.profile"));
-  if (!tmpFileProfile.open(QIODevice::WriteOnly | QIODevice::Text))
-    return;
+    out.flush();
 
-  QTextStream out2(&tmpFileProfile);
-  out2 << "export XDG_CONFIG_DIRS=";
-  out2 << QDir::currentPath() + QLatin1String("/data/kf5-profile");
-  out2 << ":/etc/xdg/\n";
-  
-  out2.flush();
-  
-  //start testing
-  UserProfileManager um;
-  QCOMPARE(um.getUserNames().at(0), QLatin1String("kde-test"));
-  
-  QVERIFY(um.getProfileNames().contains(QDir::currentPath() + QLatin1String("/data/kf5-profile")));
-  QVERIFY(um.getProfileNames().contains(QLatin1String("/etc/xdg/")));
-  
-  QCOMPARE(um.getProfilesfromUser(QLatin1String("kde-test")).at(0).getName(), QDir::currentPath() + QLatin1String("/data/kf5-profile"));
-  QCOMPARE(um.getProfilesfromUser(QLatin1String("kde-test")).at(1).getName(), QLatin1String("/etc/xdg/"));
-  
-  tmpFileProfile.remove();
-  tmpFile.remove();
+    //create temporary test .profile file
+    QFile tmpFileProfile(QDir::currentPath() + QLatin1String("/data/.profile"));
+    if (!tmpFileProfile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QTextStream out2(&tmpFileProfile);
+    out2 << "export XDG_CONFIG_DIRS=";
+    out2 << QDir::currentPath() + QLatin1String("/data/kf5-profile");
+    out2 << ":/etc/xdg/\n";
+
+    out2.flush();
+
+    //start testing
+    UserProfileManager um;
+    QCOMPARE(um.getUserNames().at(0), QLatin1String("kde-test"));
+
+    QVERIFY(um.getProfileNames().contains(QDir::currentPath() + QLatin1String("/data/kf5-profile/")));
+    QVERIFY(um.getProfileNames().contains(QLatin1String("/etc/xdg/")));
+
+    QCOMPARE(um.getProfilesfromUser(QLatin1String("kde-test")).at(0).getDirectory(), QDir::currentPath() + QLatin1String("/data/kf5-profile/"));
+    QCOMPARE(um.getProfilesfromUser(QLatin1String("kde-test")).at(1).getDirectory(), QLatin1String("/etc/xdg/"));
+
+    profileToTest = um.getProfilesfromUser(QLatin1String("kde-test")).at(0);
+
+    tmpFileProfile.remove();
+    tmpFile.remove();
+}
+
+void UserProfileManagerTest::testProfile()
+{
+    QMap<QString, QString> map = profileToTest.getKDEActionRestrictions();
+    QCOMPARE(map.value("logout"), QLatin1String("false"));
+    QCOMPARE(map.value("action/file_open"), QString());
+    
+    QCOMPARE(profileToTest.getConfigFiles().size(), 1);
+    QCOMPARE(profileToTest.getConfigFiles().at(0), QLatin1String("kdeglobals"));
+    
 }
 
 

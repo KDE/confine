@@ -23,6 +23,7 @@
 #ifndef USERPROFILEMANAGERTEST_H
 #define USERPROFILEMANAGERTEST_H
 
+#include "profile.h"
 #include <QtCore>
 
 class UserProfileManagerTest : public QObject
@@ -30,6 +31,9 @@ class UserProfileManagerTest : public QObject
   Q_OBJECT
 private slots:
   void testInitialization();
+  void testProfile();
+private:
+  Profile profileToTest;
 };
 
 #endif // USERPROFILEMANAGERTEST_H
