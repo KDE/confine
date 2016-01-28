@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  Gilbert Assaf <gassaf@gmx.de>
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,37 +20,19 @@
  * 
  */
 
-#ifndef USER_H
-#define USER_H
+#ifndef USERTEST_H
+#define USERTEST_H
 
-#include "profile.h"
-#include <QString>
-#include <QList>
+#include <QObject>
 
-class User
+class UserTest : public QObject
 {
-public:
-  User();
-  User(const QString& userName, const QString& userShell, const QString& userHomeDir);
-  ~User();
-  QString getName() const;
-  QString getHomeDir();
-  QString getXDG_CONFIG_HOME();
-  QString getEnvironmentVariableFile();
-  void setXDG_CONFIG_HOME(const QString& configHome);
-  void setEnvironmentVariableFile(const QString& varFile);
-  void save();
-  void addProfile(const Profile& profile);
-  void clearProfiles();
-  QList<Profile> getProfiles();
-  
+  Q_OBJECT
+private slots:
+  void testUser();
 private:
-  QString name;
-  QString shell;
-  QString homeDir;
-  QString XDG_CONFIG_HOME;
-  QString environmentVariableFile;
-  QList<Profile> profiles;
+  QString readAllEnvFile(const QString& fileName);
+
 };
 
-#endif // USER_H
+#endif // USERTEST_H

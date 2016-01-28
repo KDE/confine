@@ -34,7 +34,7 @@ Profile::Profile()
 
 }
 
-Profile::Profile(QString& profileDir) : name(profileDir), directory(profileDir)
+Profile::Profile(const QString& profileDir) : name(profileDir), directory(profileDir)
 {
     refreshConfigurationFilesFromProfile();
 }

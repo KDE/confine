@@ -30,7 +30,7 @@ class Profile
 {
 public:
   Profile();
-  explicit Profile(QString& profileDir);
+  explicit Profile(const QString& profileDir);
   Profile(QString& profileDir, QString& profileName);
   ~Profile();
   QMap<QString, QString> getKDEActionRestrictions() const;

@@ -29,7 +29,7 @@
 #include <QDir>
 #include <QTextStream>
 
-User::User(QString& userName, QString& userShell, QString& userHomeDir) : name(userName),
+User::User(const QString& userName, const QString& userShell, const QString& userHomeDir) : name(userName),
     shell(userShell),
     homeDir(userHomeDir),
     environmentVariableFile(QLatin1String(".profile"))
@@ -69,12 +69,12 @@ QString User::getEnvironmentVariableFile()
     return environmentVariableFile;
 }
 
-void User::setXDG_CONFIG_HOME(QString& configHome)
+void User::setXDG_CONFIG_HOME(const QString& configHome)
 {
     XDG_CONFIG_HOME = configHome;
 }
 
-void User::setEnvironmentVariableFile(QString& varFile)
+void User::setEnvironmentVariableFile(const QString& varFile)
 {
     environmentVariableFile = varFile;
 }
@@ -126,11 +126,11 @@ void User::save()
         fileContent << line;
     }
 
-    if (!hasConfigDirs) {
+    if (!hasConfigDirs && !configDirs.isEmpty()) {
         fileContent << prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
     }
 
-    if (!hasConfigHome) {
+    if (!hasConfigHome && !XDG_CONFIG_HOME.isEmpty()) {
         fileContent << prefix + QLatin1String("XDG_CONFIG_HOME=") + XDG_CONFIG_HOME + QLatin1Char('\n');
     }
 
@@ -146,5 +146,12 @@ void User::save()
 
 QList<Profile> User::getProfiles()
 {
-  return profiles;
+    return profiles;
 }
+
+void User::clearProfiles()
+{
+    profiles.clear();
+}
+
+
