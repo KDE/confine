@@ -81,6 +81,22 @@ void Profile::setKDEActionRestriction(QString& key, QString& value)
     }
 }
 
+QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals");
+    KConfigGroup grp(config, "KDE Control Module Restrictions");
+    return grp.entryMap();
+}
+
+void Profile::setKDEControlModuleRestrictions(QString& key, QString& value)
+{
+    KConfig config(directory + "kdeglobals");
+    KConfigGroup grp(&config, "KDE Control Module Restrictions");
+    if (!grp.isImmutable()) {
+        grp.writeEntry(key, value, KConfigBase::Persistent);
+    }
+}
+
 void Profile::refreshConfigurationFilesFromProfile()
 {
     configurationFiles.clear();

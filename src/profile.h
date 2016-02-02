@@ -35,6 +35,8 @@ public:
   ~Profile();
   QMap<QString, QString> getKDEActionRestrictions() const;
   void setKDEActionRestriction(QString& key, QString& value);
+  QMap<QString, QString> getKDEControlModuleRestrictions() const;
+  void setKDEControlModuleRestrictions(QString& key, QString& value);
   QStringList getConfigFiles() const;
   QString getDirectory() const;
   QString getName() const;
