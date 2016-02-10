@@ -35,8 +35,8 @@ void UserProfileManagerTest::testInitialization()
     qApp->setProperty("confineConfiguration", QVariant::fromValue<ConfineConfiguration*>(confineConfiguration));
     //create temporary test passwd file
     QFile tmpFile(QDir::currentPath() + QLatin1String("/data/passwd"));
-    if (!tmpFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+    QVERIFY(tmpFile.open(QIODevice::WriteOnly | QIODevice::Text));
+
     QTextStream out(&tmpFile);
     out << "kde-test:x:1001:1001::";
     out << QDir::currentPath() + QLatin1String("/data");
@@ -46,8 +46,7 @@ void UserProfileManagerTest::testInitialization()
 
     //create temporary test .profile file
     QFile tmpFileProfile(QDir::currentPath() + QLatin1String("/data/.profile"));
-    if (!tmpFileProfile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+    QVERIFY(tmpFileProfile.open(QIODevice::WriteOnly | QIODevice::Text));
 
     QTextStream out2(&tmpFileProfile);
     out2 << "export XDG_CONFIG_DIRS=";

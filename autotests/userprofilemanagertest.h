@@ -24,7 +24,7 @@
 #define USERPROFILEMANAGERTEST_H
 
 #include "profile.h"
-#include <QtCore>
+#include <QObject>
 
 class UserProfileManagerTest : public QObject
 {
