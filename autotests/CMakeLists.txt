@@ -39,3 +39,8 @@ ecm_add_tests(
    usertest.cpp
    LINK_LIBRARIES Qt5::Test autotests
 )
+
+ecm_add_tests(
+   immutabletest.cpp
+   LINK_LIBRARIES Qt5::Test autotests
+)
