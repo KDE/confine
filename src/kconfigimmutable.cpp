@@ -24,7 +24,7 @@
 
 #include <QDir>
 #include <KConfig>
-#include <QDebug>
+#include <QTextStream>
 
 KConfigGroup KConfigImmutable::setGroupImmutable(KConfigGroup& grp)
 {

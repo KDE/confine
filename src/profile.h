@@ -26,6 +26,7 @@
 #include <QString>
 #include <QStringList>
 
+
 class Profile
 {
 public:

@@ -32,7 +32,6 @@
 #include <QList>
 #include <QDir>
 #include <QApplication>
-#include <QDebug>
 
 
 UserProfileManager::UserProfileManager()

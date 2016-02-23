@@ -29,7 +29,6 @@
 #include <QFile>
 #include <QDir>
 #include <QDomDocument>
-#include <QDebug>
 
 ConfigXTReader::ConfigXTReader()
 {

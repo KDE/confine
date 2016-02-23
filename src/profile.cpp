@@ -27,7 +27,7 @@
 #include <kconfigbase.h>
 
 #include <QDir>
-#include <QDebug>
+#include <QMap>
 
 Profile::Profile()
 {

@@ -25,7 +25,6 @@
 
 #include <KLocalizedString>
 
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
