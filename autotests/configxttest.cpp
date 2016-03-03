@@ -26,12 +26,9 @@
 #include "kconfigfileinfo.h"
 #include "confineconfiguration.h"
 #include "configxtreader.h"
-#include "kconfigfileinfo.h"
 #include "configurationinfomanager.h"
 
 #include <QtTest>
-#include <QtCore>
-#include <QDebug>
 #include <KConfig>
 #include <KConfigGroup>
 #include <ksharedconfig.h>

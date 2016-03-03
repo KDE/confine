@@ -23,7 +23,7 @@
 #ifndef CONFIGXTTEST_H
 #define CONFIGXTTEST_H
 
-#include <QtCore>
+#include <QObject>
 
 class ConfigXTTest : public QObject
 {
