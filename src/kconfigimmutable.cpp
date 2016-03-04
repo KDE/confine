@@ -39,7 +39,7 @@ KConfigGroup KConfigImmutable::setGroupImmutable(KConfigGroup& grp)
     return setImmutableStatus(fileOut, searchString, replaceString, grp);
 }
 
-KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, QString& entry)
+KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, QString& entry, bool immutable)
 {
     QFile fileOut(QDir::currentPath() + QLatin1String("/temporary_config"));
     createSubsetConfigFile(fileOut, grp);
@@ -48,9 +48,17 @@ KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, QString& ent
         return grp;
     QString entryValue = grp.readEntry(entry);
 
-    QString searchString = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
-    QString replaceString = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n');
+    QString searchString;
+    QString replaceString;
 
+    if(immutable) { //add [$i]
+      searchString = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
+      replaceString  = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n');
+    } else { //remove [$i]
+      searchString = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n'); ;
+      replaceString  = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
+    }
+    
     return setImmutableStatus(fileOut, searchString, replaceString, grp);
 }
 

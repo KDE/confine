@@ -30,7 +30,7 @@ class KConfigImmutable
 {
 public:
   static KConfigGroup setGroupImmutable(KConfigGroup& grp);
-  static KConfigGroup setEntryImmutable(KConfigGroup& grp, QString& entry);
+  static KConfigGroup setEntryImmutable(KConfigGroup& grp, QString& entry, bool immutable);
 private:
   static KConfigGroup createNewGroupFromSubsetConfig(QFile& fileOut, KConfigGroup& grp, QString& fileContent);
   static void createSubsetConfigFile(QFile& fileOut, KConfigGroup& grp);

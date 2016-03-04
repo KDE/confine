@@ -56,8 +56,12 @@ void ImmutableTest::setImmutable()
     QString entry("bar");
     KConfigGroup grpEntryTest(&config, "Group2");
     QVERIFY(!grpEntryTest.isEntryImmutable(entry));
-    KConfigGroup grpEntryTestNew = KConfigImmutable::setEntryImmutable(grpEntryTest, entry);
+    KConfigGroup grpEntryTestNew = KConfigImmutable::setEntryImmutable(grpEntryTest, entry, true);
     QVERIFY(grpEntryTestNew.isEntryImmutable(entry));
+    
+    grpEntryTestNew = KConfigImmutable::setEntryImmutable(grpEntryTestNew, entry, false);
+    QVERIFY(!grpEntryTestNew.isEntryImmutable(entry));
+    
     
     QVERIFY(testConfig.remove());
 }
