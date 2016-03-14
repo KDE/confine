@@ -36,7 +36,7 @@ void ImmutableTest::setImmutable()
     QTextStream out(&testConfig);
     out << "[Group1]\n";
     out << "bar=false\n";
-    out << "foo=0\n";
+    out << "foo[$i]=0\n";
     out << "foobar=test\n";
     out << "\n";
     out << "[Group2]\n";
@@ -50,8 +50,10 @@ void ImmutableTest::setImmutable()
     KConfig config(QDir::currentPath() + QLatin1String("/data/immutableTestConfig"));
     KConfigGroup grp(&config, "Group1");
     QVERIFY(!grp.isImmutable());
-    KConfigGroup grpNew = KConfigImmutable::setGroupImmutable(grp);
+    KConfigGroup grpNew = KConfigImmutable::setGroupImmutable(grp, true);
     QVERIFY(grpNew.isImmutable());
+    grpNew = KConfigImmutable::setGroupImmutable(grp, false);
+    QVERIFY(!grpNew.isImmutable());
     
     QString entry("bar");
     KConfigGroup grpEntryTest(&config, "Group2");

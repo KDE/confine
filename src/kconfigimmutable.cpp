@@ -26,20 +26,37 @@
 #include <KConfig>
 #include <QTextStream>
 
-KConfigGroup KConfigImmutable::setGroupImmutable(KConfigGroup& grp)
+KConfigGroup KConfigImmutable::setGroupImmutable(KConfigGroup& grp, bool immutable)
 {
     QFile fileOut(QDir::currentPath() + QLatin1String("/temporary_config"));
     createSubsetConfigFile(fileOut, grp);
     if (!fileOut.open(QIODevice::ReadOnly | QIODevice::Text))
         return grp;
-    QString searchString = QLatin1Char('[') + grp.name() + QLatin1String("]\n");
-    QString replaceString = QLatin1Char('[') + grp.name() + QLatin1String("][$i]\n");
 
+    QString searchString;
+    QString replaceString;
 
-    return setImmutableStatus(fileOut, searchString, replaceString, grp);
+    if (immutable) { //add [$i]
+        searchString = QLatin1Char('[') + grp.name() + QLatin1String("]\n");
+        replaceString = QLatin1Char('[') + grp.name() + QLatin1String("][$i]\n");
+    } else { //remove [$i]
+        searchString = replaceString = QLatin1Char('[') + grp.name() + QLatin1String("][$i]\n");
+        replaceString = QLatin1Char('[') + grp.name() + QLatin1String("]\n");
+    }
+
+    grp = setImmutableStatus(fileOut, searchString, replaceString, grp);
+    if (!immutable) {
+        //EVERY entry has to be manualy reset to mutable, just setting the group to mutable, doesnot reset the entries
+        QMap<QString, QString> entriesMap = grp.entryMap();
+        QList<QString> entryList = entriesMap.keys();
+        Q_FOREACH(const QString & entryName, entryList) {
+            grp = setEntryImmutable(grp, entryName, false);
+        }
+    }
+    return grp;
 }
 
-KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, QString& entry, bool immutable)
+KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, const QString& entry, bool immutable)
 {
     QFile fileOut(QDir::currentPath() + QLatin1String("/temporary_config"));
     createSubsetConfigFile(fileOut, grp);
@@ -51,14 +68,14 @@ KConfigGroup KConfigImmutable::setEntryImmutable(KConfigGroup& grp, QString& ent
     QString searchString;
     QString replaceString;
 
-    if(immutable) { //add [$i]
-      searchString = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
-      replaceString  = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n');
+    if (immutable) { //add [$i]
+        searchString = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
+        replaceString  = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n');
     } else { //remove [$i]
-      searchString = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n'); ;
-      replaceString  = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
+        searchString = entry + QLatin1String("[$i]=") + entryValue + QLatin1Char('\n');
+        replaceString = entry + QLatin1Char('=') + entryValue + QLatin1Char('\n');
     }
-    
+
     return setImmutableStatus(fileOut, searchString, replaceString, grp);
 }
 
