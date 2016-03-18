@@ -37,6 +37,7 @@ UserProfileManager();
 QStringList getUserNames();
 QStringList getProfileNames();
 QList<Profile> getProfilesfromUser(const QString& userName);
+void setProfilesForUser(const QString& userName, QList<Profile> profileList);
 
 private:
   QHash<QString, User> users;

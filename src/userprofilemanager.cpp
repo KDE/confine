@@ -141,3 +141,16 @@ QList< Profile > UserProfileManager::getProfilesfromUser(const QString& userName
     User user = users.value(userName);
     return user.getProfiles();
 }
+
+void UserProfileManager::setProfilesForUser(const QString& userName, QList< Profile > profileList)
+{
+  User user = users.value(userName);
+  user.clearProfiles();
+  Q_FOREACH(const Profile& profile, profileList) {
+    user.addProfile(profile);
+    if(!profiles.contains(profile.getName())) {
+      profiles.insert(profile.getName(), profile);
+    }
+  }
+}
+
