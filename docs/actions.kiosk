@@ -1,0 +1,48 @@
+A List of all Actions, which are being checked for authorization via KAuthorized. This list was extracted from all KDE projects.
+
+[KDE Action Restrictions]
+movable_toolbars
+plasma-desktop/add_activities
+lineedit_text_completion
+run_desktop_files
+warn_unwritable_config
+shell_access
+plasma/allow_configure_when_locked
+plasma-desktop/add_activities
+skip_drm
+logout
+run_command
+action/kdesktop_rmb
+plasma/plasmashell/unlockedDesktop
+plasma-desktop/scripting_console
+action/menuedit
+action/openwith
+action/editfiletype
+action/logout
+action/lock_screen
+action/start_new_session
+action/switch_user
+action/help_contents
+action/help_whats_this
+action/help_report_bug
+action/switch_application_language
+action/help_about_app
+action/help_about_kde
+action/options_show_toolbar
+action/allow_downloading
+action/bookmarks
+action/switch_application_language
+action/plasma/containment_actions
+action/shell_access
+action/editable_desktop_icons
+action/bookmarks
+action/kwin_rmb
+action/show_lancelot
+action/run_command
+action/lock widgets
+
+
+[KDE Control Module Restrictions]
+filebehavior
+khtml_behavior
+kde-kwinoptions.desktop
