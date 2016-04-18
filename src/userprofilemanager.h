@@ -37,6 +37,7 @@ UserProfileManager();
 QStringList getUserNames();
 QStringList getProfileNames();
 QList<Profile> getProfilesfromUser(const QString& userName);
+Profile getProfile(const QString& profileName);
 void setProfilesForUser(const QString& userName, QList<Profile> profileList);
 
 private:
