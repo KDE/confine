@@ -39,6 +39,7 @@ QStringList getProfileNames();
 QList<Profile> getProfilesfromUser(const QString& userName);
 Profile getProfile(const QString& profileName);
 void setProfilesForUser(const QString& userName, QList<Profile> profileList);
+void saveProfilesForUser(const QString& userName);
 
 private:
   QHash<QString, User> users;

@@ -155,6 +155,12 @@ void UserProfileManager::setProfilesForUser(const QString& userName, QList< Prof
     users.insert(user.getName(), user);
 }
 
+void UserProfileManager::saveProfilesForUser(const QString& userName)
+{
+    User user = users.value(userName);
+    user.save();
+}
+
 Profile UserProfileManager::getProfile(const QString& profileName)
 {
     return profiles.value(profileName);
