@@ -24,7 +24,8 @@
 #define MAINWINDOW_H
 
 #include "userprofilemanager.h"
- 
+#include "configurationinfomanager.h"
+
 #include <KXmlGuiWindow>
 
 #include <ui_mainwindow.h>
@@ -38,11 +39,17 @@ class MainWindow : public KXmlGuiWindow
   
 public Q_SLOTS:
   void fillUserData(QListWidgetItem* userNameItem);
+  void fillWithConfigFiles(QListWidgetItem* configFileItem);
+  void saveProfiles();
+  void displayConfigFile();
+  void moveDown();
+  void moveUp();
 
 private:
   Ui::MainWindow ui;
   
   UserProfileManager um;
+  ConfigurationInfoManager im;
 };
  
 #endif

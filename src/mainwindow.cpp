@@ -24,7 +24,7 @@
 #include "userprofilemanager.h"
 
 #include <KLocalizedString>
-
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -34,34 +34,101 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     ui.userList->addItems(um.getUserNames());
     ui.profileList->addItems(um.getProfileNames());
 
-    Q_FOREACH(const QString & profileName, um.getProfileNames()) {
-        QListWidgetItem* item = new QListWidgetItem(ui.profileListForUser);
-        item->setData(Qt::DisplayRole, profileName);
-        item->setData(Qt::CheckStateRole, Qt::Unchecked);
-    }
-
     connect(ui.userList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(fillUserData(QListWidgetItem*)));
+    connect(ui.profileList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(fillWithConfigFiles(QListWidgetItem*)));
+    connect(ui.saveProfileButton, SIGNAL(released()), this, SLOT(saveProfiles()));
+    connect(ui.buttonUp, SIGNAL(released()), this, SLOT(moveUp()));
+    connect(ui.buttonDown, SIGNAL(released()), this, SLOT(moveDown()));
+    connect(ui.editConfigFile, SIGNAL(released()), this, SLOT(displayConfigFile()));
 
 }
 
 
 void MainWindow::fillUserData(QListWidgetItem* userNameItem)
 {
+    ui.profileListForUser->clear();
+
     QString userName = userNameItem->data(Qt::DisplayRole).toString();
     QList<Profile> pfList = um.getProfilesfromUser(userName);
     QStringList profileNames;
     Q_FOREACH(const Profile & profile, pfList) {
         profileNames << profile.getName();
     }
+
+    Q_FOREACH(const QString & profileName, profileNames) {
+        QListWidgetItem* item = new QListWidgetItem(ui.profileListForUser);
+        item->setText(profileName);
+        item->setCheckState(Qt::Checked);
+    }
+
+    Q_FOREACH(const QString & profileName, um.getProfileNames()) {
+        if (!profileNames.contains(profileName)) {
+            QListWidgetItem* item = new QListWidgetItem(ui.profileListForUser);
+            item->setText(profileName);
+            item->setCheckState(Qt::Unchecked);
+        }
+    }
+
+}
+
+void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
+{
+    QString profileName = configFileItem->text();
+    Profile pf = um.getProfile(profileName);
+    ui.profileFileList->clear();
+    ui.profileFileList->addItems(pf.getConfigFiles());
+}
+
+void MainWindow::saveProfiles()
+{
+    QString userName = ui.userList->currentItem()->text();
+    QList<Profile> profileList;
     for (int row = 0; row < ui.profileListForUser->count(); row++) {
         QListWidgetItem* item = ui.profileListForUser->item(row);
-        QString profileName = item->data(Qt::DisplayRole).toString();
-        if (profileNames.contains(profileName)) {
-            item->setData(Qt::CheckStateRole, Qt::Checked);
-        } else {
-            item->setData(Qt::CheckStateRole, Qt::Unchecked);
+        QString profileName = item->text();
+        if (item->checkState() == Qt::Checked) {
+            profileList << um.getProfile(profileName);
         }
 
+    }
+    um.setProfilesForUser(userName, profileList);
+    um.saveProfilesForUser(userName);
+}
+
+void MainWindow::displayConfigFile()
+{
+
+}
+
+
+void MainWindow::moveDown()
+{
+    int currentIndex = ui.profileListForUser->currentRow();
+    QListWidgetItem* currentItem = ui.profileListForUser->item(currentIndex);
+    QListWidgetItem* nextItem = ui.profileListForUser->item(currentIndex + 1);
+    if (nextItem == 0)
+        return;
+
+    if (currentItem->checkState() == Qt::Checked && nextItem->checkState() == Qt::Checked) {
+        currentItem = ui.profileListForUser->takeItem(currentIndex);
+        ui.profileListForUser->insertItem(currentIndex + 1, currentItem);
+        ui.profileListForUser->setCurrentRow(currentIndex + 1);
+    }
+}
+
+void MainWindow::moveUp()
+{
+    int currentIndex = ui.profileListForUser->currentRow();
+    QListWidgetItem* currentItem = ui.profileListForUser->item(currentIndex);
+    QListWidgetItem* prevItem = ui.profileListForUser->item(currentIndex - 1);
+
+    if (prevItem == 0)
+        return;
+
+    if (currentItem->checkState() == Qt::Checked && prevItem->checkState() == Qt::Checked) {
+        currentItem = ui.profileListForUser->takeItem(currentIndex);
+        ui.profileListForUser->insertItem(currentIndex - 1, currentItem);
+        ui.profileListForUser->setCurrentRow(currentIndex - 1);
     }
 }
 
