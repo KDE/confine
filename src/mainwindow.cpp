@@ -97,7 +97,18 @@ void MainWindow::saveProfiles()
 
 void MainWindow::displayConfigFile()
 {
+    QString configFileName = ui.profileFileList->currentItem()->text();
+    QString profileName = ui.profileList->currentItem()->text();
+    Profile pf = um.getProfile(profileName);
 
+    if (!configDialog) {
+        configDialog = new ConfigDialog(this);
+    }
+
+    configDialog->show();
+    configDialog->raise();
+    configDialog->activateWindow();
+    configDialog->displayConfigFile(pf.getDirectory() + configFileName);
 }
 
 
