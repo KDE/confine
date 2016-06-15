@@ -42,6 +42,8 @@ class ConfigDialog : public QDialog
     
     public Q_SLOTS:
       void displayConfigEntries(QListWidgetItem* configGroupItem);
+      void save();
+      
 private:
   Ui::ConfigDialog ui;
   KSharedConfigPtr config;

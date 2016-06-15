@@ -21,13 +21,15 @@
  */
 
 #include "configdialog.h"
-
+#include <QDebug>
 
 ConfigDialog::ConfigDialog(QWidget* parent) : QDialog(parent)
 {
     ui.setupUi(this);
     connect(ui.groupList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(displayConfigEntries(QListWidgetItem*)));
     connect(ui.closeButton, SIGNAL(released()), this, SLOT(close()));
+    connect(ui.saveButton, SIGNAL(released()), this, SLOT(save()));
+    
     ui.entryWidget->verticalHeader()->setVisible(false);
 }
 
@@ -58,3 +60,20 @@ void ConfigDialog::displayConfigEntries(QListWidgetItem* configGroupItem)
         row++;
     }
 }
+
+void ConfigDialog::save()
+{
+  QListWidgetItem* configGroupItem = ui.groupList->currentItem();
+  
+  KConfigGroup grp(config, configGroupItem->text());
+  
+  for(int i =0;i<ui.entryWidget->rowCount();i++){
+   QTableWidgetItem* keyItem = ui.entryWidget->item(i, 0);
+   QTableWidgetItem* valueItem = ui.entryWidget->item(i, 1);
+   grp.writeEntry(keyItem->text(), valueItem->text());
+  }
+  grp.sync();
+  config->sync();
+}
+
+
