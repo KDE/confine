@@ -119,7 +119,7 @@ void User::save()
         if (!hasConfigDirs && line.contains(QLatin1String("XDG_CONFIG_DIRS")) && line.indexOf('=') > -1) {
             hasConfigDirs = true;
             line = prefix + QLatin1String("XDG_CONFIG_DIRS=") + configDirs + QLatin1Char('\n');
-        } else if (!hasConfigHome && line.contains(XDG_CONFIG_HOME) && line.indexOf('=') > -1) {
+        } else if (!hasConfigHome && line.contains(QLatin1String("XDG_CONFIG_HOME")) && line.indexOf('=') > -1) {
             hasConfigHome = true;
             line = prefix + QLatin1String("XDG_CONFIG_HOME=") + XDG_CONFIG_HOME + QLatin1Char('\n');
         }
