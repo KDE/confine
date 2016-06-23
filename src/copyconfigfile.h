@@ -1,6 +1,6 @@
 /*
  * <one line to give the library's name and an idea of what it does.>
- * Copyright 2015  Gilbert Assaf <gassaf@gmx.de>
+ * Copyright 2016  Gilbert Assaf <gassaf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,35 +20,22 @@
  * 
  */
 
-#ifndef USERPROFILEMANAGER_H
-#define USERPROFILEMANAGER_H
+#ifndef COPYCONFIGFILE_H
+#define COPYCONFIGFILE_H
 
-#include "user.h"
-#include "profile.h"
+#include <ui_copyconfigfile.h>
 
-#include <QList>
-#include <QHash>
-
-class UserProfileManager
+class CopyConfigFile : public QDialog
 {
-public:
-UserProfileManager();
-~UserProfileManager();
-QStringList getUserNames();
-QStringList getProfileNames();
-QList<Profile> getProfilesfromUser(const QString& userName);
-Profile getProfile(const QString& profileName);
-void setProfilesForUser(const QString& userName, QList<Profile> profileList);
-void saveProfilesForUser(const QString& userName);
-void addProfile(Profile profile);
-
+  Q_OBJECT
+  
+  public:
+    explicit CopyConfigFile(QWidget *parent=0);
+    void fillWithData(const QString& configFile, const QStringList& profileList);
+    QString getSelectedProfile();
+    
 private:
-  QHash<QString, User> users;
-  QHash<QString, Profile> profiles;
-  QString XDG_CONFIG_DIRS;
-  QString XDG_CONFIG_HOME;
-  void getUsersOnSystem();
-  void getXDGConfig(User& user);
+  Ui::CopyConfigFile ui;
 };
 
-#endif // USERMANAGER_H
+#endif // COPYCONFIGFILE_H

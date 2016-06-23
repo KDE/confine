@@ -25,6 +25,8 @@
 
 #include "userprofilemanager.h"
 #include "configdialog.h"
+#include "copyconfigfile.h"
+#include "createprofile.h"
 
 #include <KXmlGuiWindow>
 
@@ -42,6 +44,8 @@ public Q_SLOTS:
   void fillWithConfigFiles(QListWidgetItem* configFileItem);
   void saveProfiles();
   void displayConfigFile();
+  void copyConfigFile();
+  void createProfile();
   void moveDown();
   void moveUp();
 
@@ -49,7 +53,9 @@ private:
   Ui::MainWindow ui;
   
   UserProfileManager um;
-  ConfigDialog *configDialog;
+  ConfigDialog *configDialog = 0;
+  CopyConfigFile *copyConfigFileDialog = 0;
+  CreateProfile *createProfileDialog = 0;
 };
  
 #endif

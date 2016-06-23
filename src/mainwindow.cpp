@@ -24,6 +24,8 @@
 #include "userprofilemanager.h"
 
 #include <KLocalizedString>
+#include <QFile>
+#include <QDir>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
@@ -40,7 +42,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.buttonUp, SIGNAL(released()), this, SLOT(moveUp()));
     connect(ui.buttonDown, SIGNAL(released()), this, SLOT(moveDown()));
     connect(ui.editConfigFile, SIGNAL(released()), this, SLOT(displayConfigFile()));
-
+    connect(ui.copyConfigFileButton, SIGNAL(released()), this, SLOT(copyConfigFile()));
+    connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
 }
 
 
@@ -143,3 +146,33 @@ void MainWindow::moveUp()
     }
 }
 
+void MainWindow::copyConfigFile()
+{
+    QString configFileName = ui.profileFileList->currentItem()->text();
+    QString sourceProfile = ui.profileList->currentItem()->text();
+    QStringList profileNames = um.getProfileNames();
+    profileNames.removeAll(sourceProfile);
+    if (!copyConfigFileDialog) {
+        copyConfigFileDialog = new CopyConfigFile(this);
+    }
+    copyConfigFileDialog->fillWithData(configFileName, profileNames);
+    if (copyConfigFileDialog->exec() == QDialog::Accepted) {
+        QFile::copy(sourceProfile + configFileName, copyConfigFileDialog->getSelectedProfile() + QDir::separator() + configFileName);
+    }
+}
+
+void MainWindow::createProfile()
+{
+    if (!createProfileDialog) {
+        createProfileDialog = new CreateProfile(this);
+    }
+    if (createProfileDialog->exec() == QDialog::Accepted) {
+        QString newProfilePath = createProfileDialog->getProfilePath();
+        Profile newProfile(newProfilePath);
+        um.addProfile(newProfile);
+        ui.profileList->clear();
+        ui.profileList->addItems(um.getProfileNames());
+        QDir profilePath;
+        profilePath.mkpath(newProfilePath);
+    }
+}

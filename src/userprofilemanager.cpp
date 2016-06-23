@@ -165,3 +165,9 @@ Profile UserProfileManager::getProfile(const QString& profileName)
 {
     return profiles.value(profileName);
 }
+
+void UserProfileManager::addProfile(Profile profile)
+{
+    profiles.insert(profile.getName(), profile);
+}
+
