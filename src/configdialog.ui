@@ -16,10 +16,10 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>20</y>
-     <width>571</width>
-     <height>401</height>
+     <x>10</x>
+     <y>10</y>
+     <width>671</width>
+     <height>411</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -31,6 +31,11 @@
       <property name="showGrid">
        <bool>false</bool>
       </property>
+      <column>
+       <property name="text">
+        <string>Immutable</string>
+       </property>
+      </column>
       <column>
        <property name="text">
         <string>Name</string>
@@ -53,8 +58,8 @@
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>440</y>
+     <x>490</x>
+     <y>430</y>
      <width>84</width>
      <height>34</height>
     </rect>
@@ -66,8 +71,8 @@
   <widget class="QPushButton" name="closeButton">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>440</y>
+     <x>580</x>
+     <y>430</y>
      <width>84</width>
      <height>34</height>
     </rect>

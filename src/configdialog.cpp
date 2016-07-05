@@ -21,7 +21,7 @@
  */
 
 #include "configdialog.h"
-#include <QDebug>
+#include "kconfigimmutable.h"
 
 ConfigDialog::ConfigDialog(QWidget* parent) : QDialog(parent)
 {
@@ -54,9 +54,12 @@ void ConfigDialog::displayConfigEntries(QListWidgetItem* configGroupItem)
         i.next();
         QTableWidgetItem* entrieName = new QTableWidgetItem(i.key());
         entrieName->setFlags(Qt::ItemIsSelectable);
-        ui.entryWidget->setItem(row, 0, entrieName);
-        ui.entryWidget->setItem(row, 1, new QTableWidgetItem(i.value()));
-        ui.entryWidget->setItem(row, 2, new QTableWidgetItem(im.getInfo(grp, i.key())));
+        QTableWidgetItem* immutableStateItem = new QTableWidgetItem();
+        immutableStateItem->setCheckState(grp.isEntryImmutable(i.key()) ? Qt::Checked : Qt::Unchecked);
+        ui.entryWidget->setItem(row, 0, immutableStateItem);
+        ui.entryWidget->setItem(row, 1, entrieName);
+        ui.entryWidget->setItem(row, 2, new QTableWidgetItem(i.value()));
+        ui.entryWidget->setItem(row, 3, new QTableWidgetItem(im.getInfo(grp, i.key())));
         row++;
     }
 }
@@ -68,9 +71,16 @@ void ConfigDialog::save()
     KConfigGroup grp(config, configGroupItem->text());
 
     for (int i = 0; i < ui.entryWidget->rowCount(); i++) {
-        QTableWidgetItem* keyItem = ui.entryWidget->item(i, 0);
-        QTableWidgetItem* valueItem = ui.entryWidget->item(i, 1);
-        grp.writeEntry(keyItem->text(), valueItem->text());
+        QTableWidgetItem* immutableStateItem = ui.entryWidget->item(i, 0);
+        QTableWidgetItem* keyItem = ui.entryWidget->item(i, 1);
+        QTableWidgetItem* valueItem = ui.entryWidget->item(i, 2);
+        QString key = keyItem->text();
+        grp.writeEntry(key, valueItem->text());
+        if (immutableStateItem->checkState() == Qt::Checked && !grp.isEntryImmutable(key)) {
+            KConfigImmutable::setEntryImmutable(grp, key, true);
+        } else if (immutableStateItem->checkState() == Qt::Unchecked && grp.isEntryImmutable(key)) {
+            KConfigImmutable::setEntryImmutable(grp, key, false);
+        }
     }
     grp.sync();
     config->sync();
