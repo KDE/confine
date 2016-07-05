@@ -84,6 +84,9 @@ void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
 
 void MainWindow::saveProfiles()
 {
+    if (ui.userList->currentItem() == 0)
+        return;
+
     QString userName = ui.userList->currentItem()->text();
     QList<Profile> profileList;
     for (int row = 0; row < ui.profileListForUser->count(); row++) {
@@ -100,6 +103,9 @@ void MainWindow::saveProfiles()
 
 void MainWindow::displayConfigFile()
 {
+    if (ui.profileFileList->currentItem() == 0)
+        return;
+
     QString configFileName = ui.profileFileList->currentItem()->text();
     QString profileName = ui.profileList->currentItem()->text();
     Profile pf = um.getProfile(profileName);
@@ -148,6 +154,9 @@ void MainWindow::moveUp()
 
 void MainWindow::copyConfigFile()
 {
+    if (ui.profileFileList->currentItem() == 0 || ui.profileList->currentItem() == 0)
+        return;
+
     QString configFileName = ui.profileFileList->currentItem()->text();
     QString sourceProfile = ui.profileList->currentItem()->text();
     QStringList profileNames = um.getProfileNames();
