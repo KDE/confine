@@ -53,9 +53,10 @@ set(confineUI_SRCS
   ${CMAKE_SOURCE_DIR}/src/configdialog.cpp
   ${CMAKE_SOURCE_DIR}/src/copyconfigfile.cpp
   ${CMAKE_SOURCE_DIR}/src/createprofile.cpp
+  ${CMAKE_SOURCE_DIR}/src/restrictionsdialog.cpp
 )
 
-qt5_wrap_ui(confine_UI ${CMAKE_SOURCE_DIR}/src/mainwindow.ui ${CMAKE_SOURCE_DIR}/src/configdialog.ui ${CMAKE_SOURCE_DIR}/src/copyconfigfile.ui ${CMAKE_SOURCE_DIR}/src/createprofile.ui)
+qt5_wrap_ui(confine_UI ${CMAKE_SOURCE_DIR}/src/mainwindow.ui ${CMAKE_SOURCE_DIR}/src/configdialog.ui ${CMAKE_SOURCE_DIR}/src/copyconfigfile.ui ${CMAKE_SOURCE_DIR}/src/createprofile.ui ${CMAKE_SOURCE_DIR}/src/kderestrictions.ui)
 
 add_subdirectory(autotests)
 

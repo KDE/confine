@@ -72,13 +72,14 @@ QMap<QString, QString> Profile::getKDEActionRestrictions() const
     return grp.entryMap();
 }
 
-void Profile::setKDEActionRestriction(QString& key, QString& value)
+void Profile::setKDEActionRestriction(const QString& key, const QString& value)
 {
     KConfig config(directory + "kdeglobals");
     KConfigGroup grp(&config, "KDE Action Restrictions");
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
     }
+    grp.sync();
 }
 
 QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
@@ -88,13 +89,14 @@ QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
     return grp.entryMap();
 }
 
-void Profile::setKDEControlModuleRestrictions(QString& key, QString& value)
+void Profile::setKDEControlModuleRestrictions(const QString& key, const QString& value)
 {
     KConfig config(directory + "kdeglobals");
     KConfigGroup grp(&config, "KDE Control Module Restrictions");
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
     }
+    grp.sync();
 }
 
 void Profile::refreshConfigurationFilesFromProfile()

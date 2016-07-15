@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.editConfigFile, SIGNAL(released()), this, SLOT(displayConfigFile()));
     connect(ui.copyConfigFileButton, SIGNAL(released()), this, SLOT(copyConfigFile()));
     connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
+    connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
 }
 
 
@@ -184,4 +185,23 @@ void MainWindow::createProfile()
         QDir profilePath;
         profilePath.mkpath(newProfilePath);
     }
+}
+
+void MainWindow::editRestrictions()
+{
+    if (ui.profileList->currentItem() == 0)
+        return;
+
+    if (!restrictionsDialog) {
+        restrictionsDialog = new RestrictionsDialog(this);
+    }
+
+    QString profileName = ui.profileList->currentItem()->text();
+    Profile pf = um.getProfile(profileName);
+
+    restrictionsDialog->show();
+    restrictionsDialog->raise();
+    restrictionsDialog->activateWindow();
+
+    restrictionsDialog->readKDERestrictionsFromProfile(pf);
 }
