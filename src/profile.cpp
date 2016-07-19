@@ -103,5 +103,5 @@ void Profile::refreshConfigurationFilesFromProfile()
 {
     configurationFiles.clear();
     QDir profileDir(directory);
-    configurationFiles = profileDir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    configurationFiles = profileDir.entryList(QDir::Files);
 }

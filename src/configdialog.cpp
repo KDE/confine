@@ -35,8 +35,10 @@ ConfigDialog::ConfigDialog(QWidget* parent) : QDialog(parent)
 
 void ConfigDialog::displayConfigFile(const QString& path)
 {
-    config = KSharedConfig::openConfig(path);
-
+    config = KSharedConfig::openConfig(path, KConfig::SimpleConfig);
+    ui.groupList->clear();
+    ui.entryWidget->clearContents();
+    
     Q_FOREACH(const QString & kConfigGrpName, config->groupList()) {
         QListWidgetItem* item = new QListWidgetItem(ui.groupList);
         item->setText(kConfigGrpName);
