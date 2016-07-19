@@ -31,3 +31,5 @@ ecm_add_tests(
    configxttest.cpp
    LINK_LIBRARIES Qt5::Test autotests
 )
+
+file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
