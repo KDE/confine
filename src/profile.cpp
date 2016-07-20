@@ -67,14 +67,14 @@ QStringList Profile::getConfigFiles() const
 
 QMap<QString, QString> Profile::getKDEActionRestrictions() const
 {
-    KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals");
+    KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals", KConfig::SimpleConfig);
     KConfigGroup grp(config, "KDE Action Restrictions");
     return grp.entryMap();
 }
 
 void Profile::setKDEActionRestriction(const QString& key, const QString& value)
 {
-    KConfig config(directory + "kdeglobals");
+    KConfig config(directory + "kdeglobals", KConfig::SimpleConfig);
     KConfigGroup grp(&config, "KDE Action Restrictions");
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
@@ -84,14 +84,14 @@ void Profile::setKDEActionRestriction(const QString& key, const QString& value)
 
 QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
 {
-    KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals");
+    KSharedConfigPtr config = KSharedConfig::openConfig(directory + "kdeglobals", KConfig::SimpleConfig);
     KConfigGroup grp(config, "KDE Control Module Restrictions");
     return grp.entryMap();
 }
 
 void Profile::setKDEControlModuleRestrictions(const QString& key, const QString& value)
 {
-    KConfig config(directory + "kdeglobals");
+    KConfig config(directory + "kdeglobals", KConfig::SimpleConfig);
     KConfigGroup grp(&config, "KDE Control Module Restrictions");
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
