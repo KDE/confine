@@ -39,6 +39,8 @@ UserProfileManager::UserProfileManager()
     XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
     XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
+    
+    registerProfiles(QString::fromLocal8Bit(qgetenv(XDG_CONFIG_HOME.toUtf8())));
 }
 
 UserProfileManager::~UserProfileManager()
@@ -96,7 +98,18 @@ void UserProfileManager::getXDGConfig(User& user)
         }
     }
 
-    QStringList configDirsList = configDirs.split(QLatin1Char(':'));
+    QStringList configDirsList = registerProfiles(configDirs);
+    Q_FOREACH(const QString & singleDir, configDirsList) {
+        user.addProfile(profiles.value(singleDir));
+    }
+
+    user.setXDG_CONFIG_HOME(configHome);
+}
+
+QStringList UserProfileManager::registerProfiles(const QString& bar)
+{
+  QStringList configDirsList = bar.split(QLatin1Char(':'));
+  QStringList cleanedList;
     Q_FOREACH(const QString & singleDir, configDirsList) {
         if (singleDir.isEmpty()) {
             continue;
@@ -111,11 +124,11 @@ void UserProfileManager::getXDGConfig(User& user)
             Profile pf(dir);
             profiles.insert(dir, pf);
         }
-        user.addProfile(profiles.value(dir));
+        cleanedList << dir;
     }
-
-    user.setXDG_CONFIG_HOME(configHome);
+    return cleanedList;
 }
+
 
 QStringList UserProfileManager::getUserNames()
 {

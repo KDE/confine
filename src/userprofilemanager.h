@@ -49,6 +49,7 @@ private:
   QString XDG_CONFIG_HOME;
   void getUsersOnSystem();
   void getXDGConfig(User& user);
+  QStringList registerProfiles(const QString& bar);
 };
 
 #endif // USERMANAGER_H
