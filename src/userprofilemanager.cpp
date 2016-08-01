@@ -40,7 +40,7 @@ UserProfileManager::UserProfileManager()
     XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
     
-    registerProfiles(QString::fromLocal8Bit(qgetenv(XDG_CONFIG_HOME.toUtf8())));
+    registerProfiles(QString::fromLocal8Bit(qgetenv(XDG_CONFIG_DIRS.toUtf8())));
 }
 
 UserProfileManager::~UserProfileManager()
