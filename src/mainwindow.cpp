@@ -26,7 +26,7 @@
 #include <KLocalizedString>
 #include <QFile>
 #include <QDir>
-#include <QDebug>
+#include <QFileSystemModel>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -79,8 +79,12 @@ void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
 {
     QString profileName = configFileItem->text();
     Profile pf = um.getProfile(profileName);
-    ui.profileFileList->clear();
-    ui.profileFileList->addItems(pf.getConfigFiles());
+
+    QFileSystemModel* model = new QFileSystemModel;
+    model->setRootPath(pf.getDirectory());
+    model->setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    ui.configFilesTreeView->setModel(model);
+    ui.configFilesTreeView->setRootIndex(model->index(pf.getDirectory()));
 }
 
 void MainWindow::saveProfiles()
@@ -104,10 +108,13 @@ void MainWindow::saveProfiles()
 
 void MainWindow::displayConfigFile()
 {
-    if (ui.profileFileList->currentItem() == 0)
+    QModelIndex index = ui.configFilesTreeView->currentIndex();
+    if (!index.isValid()) {
         return;
+    }
+    QFileSystemModel* model = static_cast<QFileSystemModel*>(ui.configFilesTreeView->model());
 
-    QString configFileName = ui.profileFileList->currentItem()->text();
+    QString configFileName = model->filePath(index);
     QString profileName = ui.profileList->currentItem()->text();
     Profile pf = um.getProfile(profileName);
 
@@ -118,7 +125,7 @@ void MainWindow::displayConfigFile()
     configDialog->show();
     configDialog->raise();
     configDialog->activateWindow();
-    configDialog->displayConfigFile(pf.getDirectory() + configFileName);
+    configDialog->displayConfigFile(configFileName);
 }
 
 
@@ -155,19 +162,28 @@ void MainWindow::moveUp()
 
 void MainWindow::copyConfigFile()
 {
-    if (ui.profileFileList->currentItem() == 0 || ui.profileList->currentItem() == 0)
+    QModelIndex index = ui.configFilesTreeView->currentIndex();
+    if (!index.isValid() || ui.profileList->currentItem() == 0)
         return;
 
-    QString configFileName = ui.profileFileList->currentItem()->text();
+    QFileSystemModel* model = static_cast<QFileSystemModel*>(ui.configFilesTreeView->model());
+    QString configFileName = model->filePath(index);
+
+    //don't show source profile in dialog ui
     QString sourceProfile = ui.profileList->currentItem()->text();
     QStringList profileNames = um.getProfileNames();
     profileNames.removeAll(sourceProfile);
+
     if (!copyConfigFileDialog) {
         copyConfigFileDialog = new CopyConfigFile(this);
     }
     copyConfigFileDialog->fillWithData(configFileName, profileNames);
     if (copyConfigFileDialog->exec() == QDialog::Accepted) {
-        QFile::copy(sourceProfile + configFileName, copyConfigFileDialog->getSelectedProfile() + QDir::separator() + configFileName);
+        QString targetPath = model->fileInfo(index).canonicalPath().replace(sourceProfile, copyConfigFileDialog->getSelectedProfile());
+        QString targetFile = targetPath + QDir::separator() + model->fileName(index);
+        QDir targetDir(targetPath);
+        targetDir.mkdir(targetPath);
+        QFile::copy(configFileName, targetFile);
     }
 }
 

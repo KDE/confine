@@ -24,8 +24,8 @@
 #define PROFILE_H
 
 #include <QString>
-#include <QStringList>
 #include <QMap>
+#include <QFileInfoList>
 
 class Profile
 {
@@ -38,16 +38,14 @@ public:
   void setKDEActionRestriction(const QString& key, const QString& value);
   QMap<QString, QString> getKDEControlModuleRestrictions() const;
   void setKDEControlModuleRestrictions(const QString& key, const QString& value);
-  QStringList getConfigFiles() const;
+  QFileInfoList getConfigFiles() const;
   QString getDirectory() const;
   QString getName() const;
   
   
 private:
-  void refreshConfigurationFilesFromProfile();
   QString name;
   QString directory;
-  QStringList configurationFiles;
 };
 
 #endif // PROFILE_H

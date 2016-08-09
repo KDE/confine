@@ -36,12 +36,12 @@ Profile::Profile()
 
 Profile::Profile(const QString& profileDir) : name(profileDir), directory(profileDir)
 {
-    refreshConfigurationFilesFromProfile();
+
 }
 
 Profile::Profile(QString& profileDir, QString& profileName) : name(profileName), directory(profileDir)
 {
-    refreshConfigurationFilesFromProfile();
+
 }
 
 Profile::~Profile()
@@ -59,9 +59,10 @@ QString Profile::getName() const
     return name;
 }
 
-QStringList Profile::getConfigFiles() const
+QFileInfoList Profile::getConfigFiles() const
 {
-    return configurationFiles;
+    QDir profileDir(directory);
+    return profileDir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
 }
 
 
@@ -97,11 +98,4 @@ void Profile::setKDEControlModuleRestrictions(const QString& key, const QString&
         grp.writeEntry(key, value, KConfigBase::Persistent);
     }
     grp.sync();
-}
-
-void Profile::refreshConfigurationFilesFromProfile()
-{
-    configurationFiles.clear();
-    QDir profileDir(directory);
-    configurationFiles = profileDir.entryList(QDir::Files);
 }

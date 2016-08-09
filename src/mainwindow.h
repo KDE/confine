@@ -51,7 +51,7 @@ public Q_SLOTS:
   void moveUp();
   void editRestrictions();
 
-private:
+private: 
   Ui::MainWindow ui;
   
   UserProfileManager um;

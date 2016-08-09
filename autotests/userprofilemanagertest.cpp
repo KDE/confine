@@ -75,11 +75,7 @@ void UserProfileManagerTest::testProfile()
 {
     QMap<QString, QString> map = profileToTest.getKDEActionRestrictions();
     QCOMPARE(map.value("logout"), QLatin1String("false"));
-    QCOMPARE(map.value("action/file_open"), QString());
-    
-    QCOMPARE(profileToTest.getConfigFiles().size(), 1);
-    QCOMPARE(profileToTest.getConfigFiles().at(0), QLatin1String("kdeglobals"));
-    
+    QCOMPARE(map.value("action/file_open"), QString());    
 }
 
 
