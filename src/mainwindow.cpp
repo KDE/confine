@@ -185,8 +185,10 @@ void MainWindow::copyConfigFile()
     }
     copyConfigFileDialog->fillWithData(configFileName, profileNames);
     if (copyConfigFileDialog->exec() == QDialog::Accepted) {
-        QString targetPath = model->fileInfo(index).canonicalPath().replace(sourceProfile, copyConfigFileDialog->getSelectedProfile());
-        QString targetFile = targetPath + QDir::separator() + model->fileName(index);
+        QString targetPath = model->fileInfo(index).canonicalPath() + QDir::separator();
+        targetPath = targetPath.replace(sourceProfile, copyConfigFileDialog->getSelectedProfile());
+        QString targetFile = targetPath + model->fileName(index);
+        //create profile sub dir
         QDir targetDir(targetPath);
         targetDir.mkdir(targetPath);
         QFile::copy(configFileName, targetFile);
