@@ -79,8 +79,14 @@ void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
 {
     QString profileName = configFileItem->text();
     Profile pf = um.getProfile(profileName);
-
+    
     QFileSystemModel* model = new QFileSystemModel;
+    QDir profileDir(pf.getDirectory());
+    if (!profileDir.exists()) {
+        ui.configFilesTreeView->setModel(NULL);
+        statusBar()->showMessage(i18n("Can't access directory"), 2000);
+        return;
+    }
     model->setRootPath(pf.getDirectory());
     model->setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
     ui.configFilesTreeView->setModel(model);
