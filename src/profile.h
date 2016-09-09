@@ -41,7 +41,7 @@ public:
   QFileInfoList getConfigFiles() const;
   QString getDirectory() const;
   QString getName() const;
-  
+  bool copyFileIntoProfile(const QString& sourceProfile, const QString& configFileName, const QString& configFilePath);
   
 private:
   QString name;

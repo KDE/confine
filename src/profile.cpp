@@ -99,3 +99,15 @@ void Profile::setKDEControlModuleRestrictions(const QString& key, const QString&
     }
     grp.sync();
 }
+
+bool Profile::copyFileIntoProfile(const QString& sourceProfile, const QString& configFileName, const QString& configFilePath)
+{
+    QString sourceFile = configFilePath + QDir::separator() + configFileName;
+    QString targetPath = configFilePath + QDir::separator();
+    targetPath = targetPath.replace(sourceProfile, directory);
+    QString targetFile = targetPath + configFileName;
+    //create profile sub dir
+    QDir targetDir(targetPath);
+    targetDir.mkdir(targetPath);
+    return QFile::copy(sourceFile, targetFile);
+}
