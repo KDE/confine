@@ -26,7 +26,6 @@
 #include "userprofilemanager.h"
 #include "configdialog.h"
 #include "copyconfigfile.h"
-#include "createprofile.h"
 #include "restrictionsdialog.h"
 
 #include <KXmlGuiWindow>
@@ -57,7 +56,6 @@ private:
   UserProfileManager um;
   ConfigDialog *configDialog = 0;
   CopyConfigFile *copyConfigFileDialog = 0;
-  CreateProfile *createProfileDialog = 0;
   RestrictionsDialog *restrictionsDialog = 0;
 };
  

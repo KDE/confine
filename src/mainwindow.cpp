@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QDir>
 #include <QFileSystemModel>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -192,17 +193,12 @@ void MainWindow::copyConfigFile()
 
 void MainWindow::createProfile()
 {
-    if (!createProfileDialog) {
-        createProfileDialog = new CreateProfile(this);
-    }
-    if (createProfileDialog->exec() == QDialog::Accepted) {
-        QString newProfilePath = createProfileDialog->getProfilePath();
+    QString newProfilePath = QFileDialog::getExistingDirectory(this, i18n("Select Folder"), QString(), QFileDialog::ShowDirsOnly);
+    if (!newProfilePath.isEmpty()) {
         Profile newProfile(newProfilePath);
         um.addProfile(newProfile);
         ui.profileList->clear();
         ui.profileList->addItems(um.getProfileNames());
-        QDir profilePath;
-        profilePath.mkpath(newProfilePath);
     }
 }
 
