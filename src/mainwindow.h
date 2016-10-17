@@ -27,6 +27,7 @@
 #include "configdialog.h"
 #include "copyconfigfile.h"
 #include "restrictionsdialog.h"
+#include "settingsdialog.h"
 
 #include <KXmlGuiWindow>
 
@@ -49,14 +50,17 @@ public Q_SLOTS:
   void moveDown();
   void moveUp();
   void editRestrictions();
+  void displaySettings();
 
 private: 
   Ui::MainWindow ui;
-  
   UserProfileManager um;
+  QAction *settingsAct;
+  
   ConfigDialog *configDialog = 0;
   CopyConfigFile *copyConfigFileDialog = 0;
   RestrictionsDialog *restrictionsDialog = 0;
+  SettingsDialog *settingsDialog = 0;
 };
  
 #endif

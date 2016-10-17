@@ -20,27 +20,27 @@
  * 
  */
 
-#ifndef CONFINECONFIGURATION_H
-#define CONFINECONFIGURATION_H
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
 
-#include <QString>
-#include <QMetaType>
+#include <QDialog>
+#include <ui_settingsdialog.h>
 
-class ConfineConfiguration
+class SettingsDialog : public QDialog
 {
-public:
-  ConfineConfiguration();
-  void setConfigXTDir(const QString& configDir);
-  void setPasswdPath(const QString& passwd);
-  QString getPasswdPath();
-  QString getConfigXTDir();
-  QString getXDGConfigDirsDefault();
+   Q_OBJECT
   
-private:
-  QString passwdPath;
-  QString configxtDir;
-  
+  public:
+    explicit SettingsDialog(QWidget *parent=0);
+    
+    public Q_SLOTS:
+      void save();
+      void saveAndClose();
+      void readSystemSettings();
+    
+    private:
+      Ui::settingsDialog ui;
+      void readSettings();
 };
-Q_DECLARE_METATYPE(ConfineConfiguration*);
 
-#endif // CONFINECONFIGURATION_H
+#endif // SETTINGSDIALOG_H

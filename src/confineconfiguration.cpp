@@ -22,31 +22,44 @@
 
 #include "confineconfiguration.h"
 
+#include <KConfig>
+#include <KConfigGroup>
+#include <ksharedconfig.h>
+#include <kconfigbase.h>
+
 ConfineConfiguration::ConfineConfiguration() : passwdPath("/etc/passwd"), configxtDir("/usr/share/config.kcfg/")
 {
-  
+
 }
 
 QString ConfineConfiguration::getPasswdPath()
 {
-  return passwdPath;
+    return passwdPath;
 }
 
 QString ConfineConfiguration::getConfigXTDir()
 {
-  return configxtDir;
+    return configxtDir;
 }
 
 void ConfineConfiguration::setConfigXTDir(const QString& configDir)
 {
-  configxtDir = configDir;
-  if(!configxtDir.endsWith(QLatin1Char('/'))) {
-    configxtDir += QLatin1Char('/');
-  }
-    
+    configxtDir = configDir;
+    if (!configxtDir.endsWith(QLatin1Char('/'))) {
+        configxtDir += QLatin1Char('/');
+    }
+
 }
 
 void ConfineConfiguration::setPasswdPath(const QString& passwd)
 {
-  passwdPath = passwd;
+    passwdPath = passwd;
+}
+
+QString ConfineConfiguration::getXDGConfigDirsDefault()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig();
+    KConfigGroup grp(config, "Global");
+
+    return grp.readEntry("XDG_CONFIG_DIRS_DEFAULT");
 }

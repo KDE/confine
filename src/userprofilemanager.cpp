@@ -32,15 +32,17 @@
 #include <QList>
 #include <QDir>
 #include <QApplication>
-
+#include <QDebug>
 
 UserProfileManager::UserProfileManager()
 {
     XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
     XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
-    
-    registerProfiles(QString::fromLocal8Bit(qgetenv(XDG_CONFIG_DIRS.toUtf8())));
+    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
+
+    QString defaultProfiles = cf->getXDGConfigDirsDefault();
+    registerProfiles(defaultProfiles);
 }
 
 UserProfileManager::~UserProfileManager()
@@ -108,8 +110,8 @@ void UserProfileManager::getXDGConfig(User& user)
 
 QStringList UserProfileManager::registerProfiles(const QString& bar)
 {
-  QStringList configDirsList = bar.split(QLatin1Char(':'));
-  QStringList cleanedList;
+    QStringList configDirsList = bar.split(QLatin1Char(':'));
+    QStringList cleanedList;
     Q_FOREACH(const QString & singleDir, configDirsList) {
         if (singleDir.isEmpty()) {
             continue;
@@ -155,6 +157,21 @@ QList< Profile > UserProfileManager::getProfilesfromUser(const QString& userName
     return user.getProfiles();
 }
 
+QStringList UserProfileManager::getProfileNamesfromUser(const QString& userName) const
+{
+    User user = users.value(userName);
+    QList<Profile> pfList = user.getProfiles();
+    QStringList profileNames;
+
+    Q_FOREACH(const Profile & profile, pfList) {
+        profileNames << profile.getName();
+    }
+    if (profileNames.isEmpty()) {
+        profileNames << getStandardProfiles();
+    }
+    return profileNames;
+}
+
 void UserProfileManager::setProfilesForUser(const QString& userName, QList< Profile > profileList)
 {
     User user = users.value(userName);
@@ -184,3 +201,11 @@ void UserProfileManager::addProfile(Profile profile)
     profiles.insert(profile.getName(), profile);
 }
 
+QStringList UserProfileManager::getStandardProfiles() const
+{
+    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
+
+    QString xdgContent = cf->getXDGConfigDirsDefault();
+
+    return xdgContent.split(QLatin1Char(':'));
+}

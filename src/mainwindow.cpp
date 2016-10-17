@@ -46,6 +46,9 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.copyConfigFileButton, SIGNAL(released()), this, SLOT(copyConfigFile()));
     connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
     connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
+    settingsAct = new QAction(tr("Configure Confine"), this);
+    connect(settingsAct, &QAction::triggered, this, &MainWindow::displaySettings);
+    ui.menuSettings->addAction(settingsAct);
 }
 
 
@@ -55,10 +58,7 @@ void MainWindow::fillUserData(QListWidgetItem* userNameItem)
 
     QString userName = userNameItem->data(Qt::DisplayRole).toString();
     QList<Profile> pfList = um.getProfilesfromUser(userName);
-    QStringList profileNames;
-    Q_FOREACH(const Profile & profile, pfList) {
-        profileNames << profile.getName();
-    }
+    QStringList profileNames = um.getProfileNamesfromUser(userName);
 
     Q_FOREACH(const QString & profileName, profileNames) {
         QListWidgetItem* item = new QListWidgetItem(ui.profileListForUser);
@@ -80,7 +80,7 @@ void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
 {
     QString profileName = configFileItem->text();
     Profile pf = um.getProfile(profileName);
-    
+
     QFileSystemModel* model = new QFileSystemModel;
     QDir profileDir(pf.getDirectory());
     if (!profileDir.exists()) {
@@ -195,6 +195,7 @@ void MainWindow::createProfile()
 {
     QString newProfilePath = QFileDialog::getExistingDirectory(this, i18n("Select Folder"), QString(), QFileDialog::ShowDirsOnly);
     if (!newProfilePath.isEmpty()) {
+        newProfilePath.append(QDir::separator());
         Profile newProfile(newProfilePath);
         um.addProfile(newProfile);
         ui.profileList->clear();
@@ -220,3 +221,14 @@ void MainWindow::editRestrictions()
 
     restrictionsDialog->readKDERestrictionsFromProfile(pf);
 }
+
+void MainWindow::displaySettings()
+{
+    if (!settingsDialog) {
+        settingsDialog = new SettingsDialog(this);
+    }
+    settingsDialog->show();
+    settingsDialog->raise();
+    settingsDialog->activateWindow();
+}
+

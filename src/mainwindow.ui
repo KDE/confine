@@ -121,11 +121,22 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>30</height>
+     <height>29</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Setti&amp;ngs</string>
+    </property>
+   </widget>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionConfigure_Confine">
+   <property name="text">
+    <string>&amp;Configure Confine</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

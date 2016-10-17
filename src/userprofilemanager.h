@@ -32,21 +32,24 @@
 class UserProfileManager
 {
 public:
-UserProfileManager();
-~UserProfileManager();
-QStringList getUserNames();
-QStringList getProfileNames();
-QList<Profile> getProfilesfromUser(const QString& userName);
-Profile getProfile(const QString& profileName);
-void setProfilesForUser(const QString& userName, QList<Profile> profileList);
-void saveProfilesForUser(const QString& userName);
-void addProfile(Profile profile);
+  UserProfileManager();
+  ~UserProfileManager();
+  QStringList getUserNames();
+  QStringList getProfileNames();
+  QList<Profile> getProfilesfromUser(const QString& userName);
+  QStringList getProfileNamesfromUser(const QString& userName) const;
+  Profile getProfile(const QString& profileName);
+  void setProfilesForUser(const QString& userName, QList<Profile> profileList);
+  void saveProfilesForUser(const QString& userName);
+  void addProfile(Profile profile);
+  QStringList getStandardProfiles() const;
 
 private:
-  QHash<QString, User> users;
-  QHash<QString, Profile> profiles;
   QString XDG_CONFIG_DIRS;
   QString XDG_CONFIG_HOME;
+  
+  QHash<QString, User> users;
+  QHash<QString, Profile> profiles;
   void getUsersOnSystem();
   void getXDGConfig(User& user);
   QStringList registerProfiles(const QString& bar);
