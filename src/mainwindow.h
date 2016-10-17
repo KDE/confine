@@ -51,6 +51,7 @@ public Q_SLOTS:
   void moveUp();
   void editRestrictions();
   void displaySettings();
+  void filterUsers(int state);
 
 private: 
   Ui::MainWindow ui;

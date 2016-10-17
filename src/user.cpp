@@ -154,4 +154,11 @@ void User::clearProfiles()
     profiles.clear();
 }
 
+bool User::canLogin() const
+{
+    if (shell == QLatin1String("/bin/false") || shell.contains("nologin") || shell.isEmpty()) {
+        return false;
+    }
+    return true;
+}
 

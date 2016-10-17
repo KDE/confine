@@ -132,11 +132,16 @@ QStringList UserProfileManager::registerProfiles(const QString& bar)
 }
 
 
-QStringList UserProfileManager::getUserNames()
+QStringList UserProfileManager::getUserNames(bool onlyShowUsersWhoCanLogin)
 {
     QStringList userNames;
     Q_FOREACH(const User & user, users.values()) {
-        userNames << user.getName();
+        if (onlyShowUsersWhoCanLogin) {
+            if (user.canLogin())
+                userNames << user.getName();
+        } else {
+            userNames << user.getName();
+        }
     }
     return userNames;
 }

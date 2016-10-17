@@ -43,6 +43,7 @@ public:
   void addProfile(const Profile& profile);
   void clearProfiles();
   QList<Profile> getProfiles();
+  bool canLogin() const;
   
 private:
   QString name;

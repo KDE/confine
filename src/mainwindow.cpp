@@ -28,13 +28,14 @@
 #include <QDir>
 #include <QFileSystemModel>
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
     ui.setupUi(this);
     ui.tabWidget->setCurrentIndex(0);
 
-    ui.userList->addItems(um.getUserNames());
+    ui.userList->addItems(um.getUserNames(true));
     ui.profileList->addItems(um.getProfileNames());
 
     connect(ui.userList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(fillUserData(QListWidgetItem*)));
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.copyConfigFileButton, SIGNAL(released()), this, SLOT(copyConfigFile()));
     connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
     connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
+    connect(ui.filterUsers, SIGNAL(stateChanged(int)), this, SLOT(filterUsers(int)));
+    
     settingsAct = new QAction(tr("Configure Confine"), this);
     connect(settingsAct, &QAction::triggered, this, &MainWindow::displaySettings);
     ui.menuSettings->addAction(settingsAct);
@@ -230,5 +233,15 @@ void MainWindow::displaySettings()
     settingsDialog->show();
     settingsDialog->raise();
     settingsDialog->activateWindow();
+}
+
+void MainWindow::filterUsers(int state)
+{
+    ui.userList->clear();
+    if (state == Qt::Unchecked) {
+        ui.userList->addItems(um.getUserNames(true));
+    } else if (state == Qt::Checked) {
+        ui.userList->addItems(um.getUserNames(false));
+    }
 }
 

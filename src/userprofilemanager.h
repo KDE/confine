@@ -34,7 +34,7 @@ class UserProfileManager
 public:
   UserProfileManager();
   ~UserProfileManager();
-  QStringList getUserNames();
+  QStringList getUserNames(bool onlyShowUsersWhoCanLogin);
   QStringList getProfileNames();
   QList<Profile> getProfilesfromUser(const QString& userName);
   QStringList getProfileNamesfromUser(const QString& userName) const;

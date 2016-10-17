@@ -57,7 +57,7 @@ void UserProfileManagerTest::testInitialization()
 
     //start testing
     UserProfileManager um;
-    QCOMPARE(um.getUserNames().at(0), QLatin1String("kde-test"));
+    QCOMPARE(um.getUserNames(false).at(0), QLatin1String("kde-test"));
 
     QVERIFY(um.getProfileNames().contains(QDir::currentPath() + QLatin1String("/data/kf5-profile/")));
     QVERIFY(um.getProfileNames().contains(QLatin1String("/etc/xdg/")));
