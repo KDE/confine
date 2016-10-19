@@ -122,7 +122,7 @@ QStringList UserProfileManager::registerProfiles(const QString& bar)
             dir += QLatin1Char('/');
         }
 
-        if (!profiles.contains(dir)) {
+        if (!profiles.contains(singleDir)) {
             Profile pf(dir);
             profiles.insert(dir, pf);
         }
@@ -212,5 +212,17 @@ QStringList UserProfileManager::getStandardProfiles() const
 
     QString xdgContent = cf->getXDGConfigDirsDefault();
 
-    return xdgContent.split(QLatin1Char(':'));
+    QStringList stdProfiles = xdgContent.split(QLatin1Char(':'));
+    QStringList result;
+
+
+    Q_FOREACH(const QString & singleDir, stdProfiles) {
+        QString dir(singleDir);
+        if (!dir.endsWith(QLatin1Char('/'))) {
+            dir += QLatin1Char('/');
+        }
+        result << dir;
+    }
+    return result;
+
 }
