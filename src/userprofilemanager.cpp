@@ -39,10 +39,7 @@ UserProfileManager::UserProfileManager()
     XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
     XDG_CONFIG_HOME = "XDG_CONFIG_HOME";
     getUsersOnSystem();
-    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
-
-    QString defaultProfiles = cf->getXDGConfigDirsDefault();
-    registerProfiles(defaultProfiles);
+    registerStandardProfiles();
 }
 
 UserProfileManager::~UserProfileManager()
@@ -226,3 +223,12 @@ QStringList UserProfileManager::getStandardProfiles() const
     return result;
 
 }
+
+void UserProfileManager::registerStandardProfiles()
+{
+    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
+
+    QString defaultProfiles = cf->getXDGConfigDirsDefault();
+    registerProfiles(defaultProfiles);
+}
+

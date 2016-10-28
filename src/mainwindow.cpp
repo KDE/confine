@@ -28,7 +28,6 @@
 #include <QDir>
 #include <QFileSystemModel>
 #include <QFileDialog>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -230,9 +229,13 @@ void MainWindow::displaySettings()
     if (!settingsDialog) {
         settingsDialog = new SettingsDialog(this);
     }
-    settingsDialog->show();
-    settingsDialog->raise();
-    settingsDialog->activateWindow();
+
+    settingsDialog->exec();
+
+    um.registerStandardProfiles();
+    ui.profileList->clear();
+    ui.profileList->addItems(um.getProfileNames());
+
 }
 
 void MainWindow::filterUsers(int state)

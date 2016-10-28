@@ -43,6 +43,7 @@ public:
   void saveProfilesForUser(const QString& userName);
   void addProfile(Profile profile);
   QStringList getStandardProfiles() const;
+  void registerStandardProfiles();
 
 private:
   QString XDG_CONFIG_DIRS;
