@@ -43,6 +43,11 @@ void ConfigDialog::displayConfigFile(const QString& path)
         QListWidgetItem* item = new QListWidgetItem(ui.groupList);
         item->setText(kConfigGrpName);
     }
+    
+    if (ui.groupList->count() > 0) {
+        displayConfigEntries(ui.groupList->item(0));
+        ui.groupList->setCurrentItem(0);
+    }
 }
 
 void ConfigDialog::displayConfigEntries(QListWidgetItem* configGroupItem)
