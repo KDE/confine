@@ -35,15 +35,16 @@ public:
   Profile(QString& profileDir, QString& profileName);
   ~Profile();
   QMap<QString, QString> getKDEActionRestrictions() const;
-  void setKDEActionRestriction(const QString& key, const QString& value);
+  bool setKDEActionRestriction(const QString& key, const QString& value);
   QMap<QString, QString> getKDEControlModuleRestrictions() const;
-  void setKDEControlModuleRestrictions(const QString& key, const QString& value);
+  bool setKDEControlModuleRestrictions(const QString& key, const QString& value);
   QFileInfoList getConfigFiles() const;
   QString getDirectory() const;
   QString getName() const;
   bool copyFileIntoProfile(const QString& sourceProfile, const QString& configFileName, const QString& configFilePath);
   
 private:
+  bool writeKDEGlobals(const QString& key, const QString& value, const QString& groupName);
   QString name;
   QString directory;
 };

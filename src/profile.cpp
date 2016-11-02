@@ -73,14 +73,9 @@ QMap<QString, QString> Profile::getKDEActionRestrictions() const
     return grp.entryMap();
 }
 
-void Profile::setKDEActionRestriction(const QString& key, const QString& value)
+bool Profile::setKDEActionRestriction(const QString& key, const QString& value)
 {
-    KConfig config(directory + "kdeglobals", KConfig::SimpleConfig);
-    KConfigGroup grp(&config, "KDE Action Restrictions");
-    if (!grp.isImmutable()) {
-        grp.writeEntry(key, value, KConfigBase::Persistent);
-    }
-    grp.sync();
+    return writeKDEGlobals(key, value, QLatin1String("KDE Action Restrictions"));
 }
 
 QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
@@ -90,14 +85,27 @@ QMap<QString, QString> Profile::getKDEControlModuleRestrictions() const
     return grp.entryMap();
 }
 
-void Profile::setKDEControlModuleRestrictions(const QString& key, const QString& value)
+bool Profile::setKDEControlModuleRestrictions(const QString& key, const QString& value)
 {
+    return writeKDEGlobals(key, value, QLatin1String("KDE Control Module Restrictions"));
+}
+
+bool Profile::writeKDEGlobals(const QString& key, const QString& value, const QString& groupName)
+{
+    //create kdeglobals via QFile, because kconfig sets group permissions: -r
+    QFile file(directory + "kdeglobals");
+    if (!file.exists()) {
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            return false;
+        file.close();
+    }
     KConfig config(directory + "kdeglobals", KConfig::SimpleConfig);
-    KConfigGroup grp(&config, "KDE Control Module Restrictions");
+    KConfigGroup grp(&config, groupName);
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
     }
-    grp.sync();
+    return grp.sync();
+
 }
 
 bool Profile::copyFileIntoProfile(const QString& sourceProfile, const QString& configFileName, const QString& configFilePath)

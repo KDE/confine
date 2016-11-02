@@ -22,6 +22,9 @@
 
 #include "restrictionsdialog.h"
 
+#include <QMessageBox>
+#include <KLocalizedString>
+
 RestrictionsDialog::RestrictionsDialog(QWidget* parent) : QDialog(parent)
 {
     ui.setupUi(this);
@@ -122,9 +125,15 @@ void RestrictionsDialog::save()
     for (int i = 0; i < ui.restrictionSets->count(); i++) {
         QListWidgetItem* item = ui.restrictionSets->item(i);
         if (item->checkState() == Qt::Unchecked) {
-            profile.setKDEActionRestriction(item->text(), "false");
+            if (profile.setKDEActionRestriction(item->text(), "false")) {
+                printErrorMsg();
+                return;
+            }
         } else if (item->checkState() == Qt::Checked) {
-            profile.setKDEActionRestriction(item->text(), "true");
+            if (profile.setKDEActionRestriction(item->text(), "true")) {
+                printErrorMsg();
+                return;
+            }
         }
 
     }
@@ -132,11 +141,25 @@ void RestrictionsDialog::save()
     for (int i = 0; i < ui.modulRestrictionSets->count(); i++) {
         QListWidgetItem* item = ui.modulRestrictionSets->item(i);
         if (item->checkState() == Qt::Unchecked) {
-            profile.setKDEControlModuleRestrictions(item->text(), "false");
+            if (profile.setKDEControlModuleRestrictions(item->text(), "false")) {
+                printErrorMsg();
+                return;
+            }
         } else if (item->checkState() == Qt::Checked) {
-            profile.setKDEControlModuleRestrictions(item->text(), "true");
+            if (profile.setKDEControlModuleRestrictions(item->text(), "true")) {
+                printErrorMsg();
+                return;
+            }
         }
 
     }
+
+}
+
+void RestrictionsDialog::printErrorMsg()
+{
+    QMessageBox::critical(this, i18n("Error"),
+                          i18n("The modifications could not be saved.\n"
+                             "Check that you have write acsess!"));
 
 }
