@@ -55,6 +55,7 @@ public Q_SLOTS:
 
 private: 
   void setupActions();
+  void firstStartup();
   
   Ui::MainWindow ui;
   UserProfileManager um;

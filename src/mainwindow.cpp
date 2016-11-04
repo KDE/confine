@@ -51,6 +51,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.filterUsers, SIGNAL(stateChanged(int)), this, SLOT(filterUsers(int)));
     
     setupActions();
+    
+    KSharedConfigPtr config = KSharedConfig::openConfig();
+    KConfigGroup grp(config, "Global");
+    if (!grp.hasKey("XDG_CONFIG_DIRS_DEFAULT")) {
+        firstStartup();
+    }
 }
 
 
@@ -252,4 +258,17 @@ void MainWindow::setupActions()
     
     KHelpMenu* mHelpMenu = new KHelpMenu( this );
     menuBar()->addMenu(mHelpMenu->menu() );
+}
+
+void MainWindow::firstStartup()
+{
+    QString XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
+    QString xdgContent = QString::fromLocal8Bit(qgetenv(XDG_CONFIG_DIRS.toUtf8()));
+
+    KSharedConfigPtr config = KSharedConfig::openConfig();
+    KConfigGroup grp(config, "Global");
+
+    grp.writeEntry("XDG_CONFIG_DIRS_DEFAULT", xdgContent);
+    grp.sync();
+    config->sync();
 }
