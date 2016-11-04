@@ -24,6 +24,8 @@
 #include "userprofilemanager.h"
 
 #include <KLocalizedString>
+#include <KActionCollection>
+#include <KHelpMenu>
 #include <QFile>
 #include <QDir>
 #include <QFileSystemModel>
@@ -48,9 +50,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
     connect(ui.filterUsers, SIGNAL(stateChanged(int)), this, SLOT(filterUsers(int)));
     
-    settingsAct = new QAction(tr("Configure Confine"), this);
-    connect(settingsAct, &QAction::triggered, this, &MainWindow::displaySettings);
-    ui.menuSettings->addAction(settingsAct);
+    setupActions();
 }
 
 
@@ -224,7 +224,7 @@ void MainWindow::editRestrictions()
     restrictionsDialog->readKDERestrictionsFromProfile(pf);
 }
 
-void MainWindow::displaySettings()
+void MainWindow::showSettings()
 {
     if (!settingsDialog) {
         settingsDialog = new SettingsDialog(this);
@@ -235,7 +235,6 @@ void MainWindow::displaySettings()
     um.registerStandardProfiles();
     ui.profileList->clear();
     ui.profileList->addItems(um.getProfileNames());
-
 }
 
 void MainWindow::filterUsers(int state)
@@ -248,3 +247,14 @@ void MainWindow::filterUsers(int state)
     }
 }
 
+void MainWindow::setupActions()
+{
+    QAction *quitAct = KStandardAction::quit(this, SLOT(close()), actionCollection());   
+    QAction *settingsAct = KStandardAction::preferences(this, &MainWindow::showSettings, actionCollection());
+    
+    ui.menuSettings->addAction(settingsAct);
+    ui.menuSettings->addAction(quitAct);
+    
+    KHelpMenu* mHelpMenu = new KHelpMenu( this );
+    menuBar()->addMenu(mHelpMenu->menu() );
+}

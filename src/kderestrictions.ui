@@ -50,7 +50,21 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>KDE Action Restrictions</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QListWidget" name="restrictionSets"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>KDE Control Module Restrictions</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QListWidget" name="modulRestrictionSets"/>

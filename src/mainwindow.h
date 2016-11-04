@@ -50,13 +50,14 @@ public Q_SLOTS:
   void moveDown();
   void moveUp();
   void editRestrictions();
-  void displaySettings();
+  void showSettings();
   void filterUsers(int state);
 
 private: 
+  void setupActions();
+  
   Ui::MainWindow ui;
   UserProfileManager um;
-  QAction *settingsAct;
   
   ConfigDialog *configDialog = 0;
   CopyConfigFile *copyConfigFileDialog = 0;
