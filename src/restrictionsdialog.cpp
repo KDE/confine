@@ -126,12 +126,10 @@ void RestrictionsDialog::save()
         QListWidgetItem* item = ui.restrictionSets->item(i);
         if (item->checkState() == Qt::Unchecked) {
             if (profile.setKDEActionRestriction(item->text(), "false")) {
-                printErrorMsg();
                 return;
             }
         } else if (item->checkState() == Qt::Checked) {
             if (profile.setKDEActionRestriction(item->text(), "true")) {
-                printErrorMsg();
                 return;
             }
         }
@@ -142,12 +140,10 @@ void RestrictionsDialog::save()
         QListWidgetItem* item = ui.modulRestrictionSets->item(i);
         if (item->checkState() == Qt::Unchecked) {
             if (profile.setKDEControlModuleRestrictions(item->text(), "false")) {
-                printErrorMsg();
                 return;
             }
         } else if (item->checkState() == Qt::Checked) {
             if (profile.setKDEControlModuleRestrictions(item->text(), "true")) {
-                printErrorMsg();
                 return;
             }
         }
@@ -156,10 +152,3 @@ void RestrictionsDialog::save()
 
 }
 
-void RestrictionsDialog::printErrorMsg()
-{
-    QMessageBox::critical(this, i18n("Error"),
-                          i18n("The modifications could not be saved.\n"
-                             "Check that you have write acsess!"));
-
-}

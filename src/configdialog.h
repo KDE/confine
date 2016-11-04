@@ -37,8 +37,7 @@ class ConfigDialog : public QDialog
   Q_OBJECT
   
   public:
-    explicit ConfigDialog(QWidget *parent=0);
-    void displayConfigFile(const QString& path);
+    explicit ConfigDialog(QWidget *parent=0, const QString& path="");
     
     public Q_SLOTS:
       void displayConfigEntries(QListWidgetItem* configGroupItem);

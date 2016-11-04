@@ -23,7 +23,7 @@
 #include "configdialog.h"
 #include "kconfigimmutable.h"
 
-ConfigDialog::ConfigDialog(QWidget* parent) : QDialog(parent)
+ConfigDialog::ConfigDialog(QWidget* parent, const QString& path) : QDialog(parent)
 {
     ui.setupUi(this);
     connect(ui.groupList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(displayConfigEntries(QListWidgetItem*)));
@@ -31,10 +31,7 @@ ConfigDialog::ConfigDialog(QWidget* parent) : QDialog(parent)
     connect(ui.saveButton, SIGNAL(released()), this, SLOT(save()));
 
     ui.entryWidget->verticalHeader()->setVisible(false);
-}
-
-void ConfigDialog::displayConfigFile(const QString& path)
-{
+    
     config = KSharedConfig::openConfig(path, KConfig::SimpleConfig);
     ui.groupList->clear();
     ui.entryWidget->clearContents();
@@ -74,7 +71,8 @@ void ConfigDialog::displayConfigEntries(QListWidgetItem* configGroupItem)
 void ConfigDialog::save()
 {
     QListWidgetItem* configGroupItem = ui.groupList->currentItem();
-
+    config->isConfigWritable(true); //displays possible error message
+    
     KConfigGroup grp(config, configGroupItem->text());
 
     for (int i = 0; i < ui.entryWidget->rowCount(); i++) {

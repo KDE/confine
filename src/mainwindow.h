@@ -59,7 +59,6 @@ private:
   Ui::MainWindow ui;
   UserProfileManager um;
   
-  ConfigDialog *configDialog = 0;
   CopyConfigFile *copyConfigFileDialog = 0;
   RestrictionsDialog *restrictionsDialog = 0;
   SettingsDialog *settingsDialog = 0;

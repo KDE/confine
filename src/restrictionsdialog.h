@@ -40,7 +40,6 @@ class RestrictionsDialog : public QDialog
    
 private:
   void fillWithRestrictions();
-  void printErrorMsg();
   
   Ui::KDERestrictions ui;
   Profile profile;

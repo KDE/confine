@@ -100,9 +100,13 @@ bool Profile::writeKDEGlobals(const QString& key, const QString& value, const QS
         file.close();
     }
     KConfig config(directory + "kdeglobals", KConfig::SimpleConfig);
+    config.isConfigWritable(true); //displays possible error message
+    
     KConfigGroup grp(&config, groupName);
     if (!grp.isImmutable()) {
         grp.writeEntry(key, value, KConfigBase::Persistent);
+    } else {
+	return false;
     }
     return grp.sync();
 
