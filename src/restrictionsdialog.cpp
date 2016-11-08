@@ -25,11 +25,13 @@
 #include <QMessageBox>
 #include <KLocalizedString>
 
-RestrictionsDialog::RestrictionsDialog(QWidget* parent) : QDialog(parent)
+RestrictionsDialog::RestrictionsDialog(const Profile& pf, QWidget* parent) : QDialog(parent)
 {
     ui.setupUi(this);
     connect(ui.cancelButton, SIGNAL(released()), this, SLOT(close()));
     connect(ui.saveButton, SIGNAL(released()), this, SLOT(save()));
+
+    readKDERestrictionsFromProfile(pf);
 }
 
 void RestrictionsDialog::fillWithRestrictions()

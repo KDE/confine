@@ -22,6 +22,10 @@
 
 #include "mainwindow.h"
 #include "userprofilemanager.h"
+#include "configdialog.h"
+#include "settingsdialog.h"
+#include "copyconfigfile.h"
+#include "restrictionsdialog.h"
 
 #include <KLocalizedString>
 #include <KActionCollection>
@@ -49,9 +53,9 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
     connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
     connect(ui.filterUsers, SIGNAL(stateChanged(int)), this, SLOT(filterUsers(int)));
-    
+
     setupActions();
-    
+
     KSharedConfigPtr config = KSharedConfig::openConfig();
     KConfigGroup grp(config, "Global");
     if (!grp.hasKey("XDG_CONFIG_DIRS_DEFAULT")) {
@@ -98,6 +102,7 @@ void MainWindow::fillWithConfigFiles(QListWidgetItem* configFileItem)
     }
     model->setRootPath(pf.getDirectory());
     model->setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    ui.configFilesTreeView->reset();
     ui.configFilesTreeView->setModel(model);
     ui.configFilesTreeView->setRootIndex(model->index(pf.getDirectory()));
 }
@@ -133,9 +138,10 @@ void MainWindow::displayConfigFile()
     QString profileName = ui.profileList->currentItem()->text();
     Profile pf = um.getProfile(profileName);
 
-    ConfigDialog *configDialog = new ConfigDialog(this, configFileName);
+
+    QScopedPointer<ConfigDialog> configDialog(new ConfigDialog(this , configFileName));
     configDialog->exec();
-    
+
 }
 
 
@@ -184,10 +190,7 @@ void MainWindow::copyConfigFile()
     QStringList profileNames = um.getProfileNames();
     profileNames.removeAll(sourceProfile);
 
-    if (!copyConfigFileDialog) {
-        copyConfigFileDialog = new CopyConfigFile(this);
-    }
-    copyConfigFileDialog->fillWithData(configFileName, profileNames);
+    QScopedPointer<CopyConfigFile> copyConfigFileDialog(new CopyConfigFile(configFileName, profileNames, this));
     if (copyConfigFileDialog->exec() == QDialog::Accepted) {
         Profile pf = um.getProfile(copyConfigFileDialog->getSelectedProfile());
         pf.copyFileIntoProfile(sourceProfile, model->fileName(index), model->fileInfo(index).canonicalPath());
@@ -211,25 +214,18 @@ void MainWindow::editRestrictions()
     if (ui.profileList->currentItem() == 0)
         return;
 
-    if (!restrictionsDialog) {
-        restrictionsDialog = new RestrictionsDialog(this);
-    }
-
     QString profileName = ui.profileList->currentItem()->text();
     Profile pf = um.getProfile(profileName);
 
-    restrictionsDialog->show();
-    restrictionsDialog->raise();
-    restrictionsDialog->activateWindow();
 
-    restrictionsDialog->readKDERestrictionsFromProfile(pf);
+    QScopedPointer<RestrictionsDialog> restrictionsDialog(new RestrictionsDialog(pf, this));
+
+    restrictionsDialog->exec();
 }
 
 void MainWindow::showSettings()
 {
-    if (!settingsDialog) {
-        settingsDialog = new SettingsDialog(this);
-    }
+    QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(this));
 
     settingsDialog->exec();
 
@@ -250,14 +246,14 @@ void MainWindow::filterUsers(int state)
 
 void MainWindow::setupActions()
 {
-    QAction *quitAct = KStandardAction::quit(this, SLOT(close()), actionCollection());   
-    QAction *settingsAct = KStandardAction::preferences(this, &MainWindow::showSettings, actionCollection());
-    
+    QAction* quitAct = KStandardAction::quit(this, SLOT(close()), actionCollection());
+    QAction* settingsAct = KStandardAction::preferences(this, &MainWindow::showSettings, actionCollection());
+
     ui.menuSettings->addAction(settingsAct);
     ui.menuSettings->addAction(quitAct);
-    
-    KHelpMenu* mHelpMenu = new KHelpMenu( this );
-    menuBar()->addMenu(mHelpMenu->menu() );
+
+    KHelpMenu* mHelpMenu = new KHelpMenu(this);
+    menuBar()->addMenu(mHelpMenu->menu());
 }
 
 void MainWindow::firstStartup()

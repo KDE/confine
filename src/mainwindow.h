@@ -24,10 +24,6 @@
 #define MAINWINDOW_H
 
 #include "userprofilemanager.h"
-#include "configdialog.h"
-#include "copyconfigfile.h"
-#include "restrictionsdialog.h"
-#include "settingsdialog.h"
 
 #include <KXmlGuiWindow>
 
@@ -59,10 +55,6 @@ private:
   
   Ui::MainWindow ui;
   UserProfileManager um;
-  
-  CopyConfigFile *copyConfigFileDialog = 0;
-  RestrictionsDialog *restrictionsDialog = 0;
-  SettingsDialog *settingsDialog = 0;
 };
  
 #endif

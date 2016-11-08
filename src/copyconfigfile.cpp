@@ -22,9 +22,10 @@
 
 #include "copyconfigfile.h"
 
-CopyConfigFile::CopyConfigFile(QWidget* parent) : QDialog(parent)
+CopyConfigFile::CopyConfigFile(const QString& configFile, const QStringList& profileList, QWidget* parent) : QDialog(parent)
 {
     ui.setupUi(this);
+    fillWithData(configFile, profileList);
 }
 
 void CopyConfigFile::fillWithData(const QString& configFile, const QStringList& profileList)
