@@ -28,34 +28,45 @@
 #include <ksharedconfig.h>
 #include <kconfigbase.h>
 
-SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent)
+SettingsDialog::SettingsDialog(UserProfileManager& um, QWidget* parent) : QDialog(parent)
 {
     ui.setupUi(this);
     connect(ui.cancelButton, SIGNAL(released()), this, SLOT(close()));
     connect(ui.applyButton, SIGNAL(released()), this, SLOT(save()));
     connect(ui.okButton, SIGNAL(released()), this, SLOT(saveAndClose()));
-    connect(ui.readDefaultProfiles, SIGNAL(released()), this, SLOT(readSystemSettings()));
 
-    readSettings();
-}
+    QStringList stdProfiles = um.getStandardProfiles();
+    Q_FOREACH(const QString & profileName, stdProfiles) {
+        QListWidgetItem* item = new QListWidgetItem(ui.profileList);
+        item->setText(profileName);
+        item->setCheckState(Qt::Checked);
+    }
+    QStringList profileNames = um.getProfileNames();
+    QSet<QString> profileSet = profileNames.toSet();
+    profileSet.subtract(stdProfiles.toSet());
 
-void SettingsDialog::readSettings()
-{
-    KSharedConfigPtr config = KSharedConfig::openConfig();
-    KConfigGroup grp(config, "Global");
-
-    ConfineConfiguration* cf = qApp->property("confineConfiguration").value<ConfineConfiguration*>();
-
-    QString xdgContent = cf->getXDGConfigDirsDefault();
-
-    ui.defaultXDGConfigDir->setText(xdgContent);
+    Q_FOREACH(const QString & profileName, profileSet) {
+        QListWidgetItem* item = new QListWidgetItem(ui.profileList);
+        item->setText(profileName);
+        item->setCheckState(Qt::Unchecked);
+    }
 
 }
 
 void SettingsDialog::save()
 {
+    QStringList profileList;
+    for (int row = 0; row < ui.profileList->count(); row++) {
+        QListWidgetItem* item = ui.profileList->item(row);
+        QString profileName = item->text();
+        if (item->checkState() == Qt::Checked) {
+            profileList << profileName;
+        }
+
+    }
+    QString xdgContent = profileList.join(QLatin1Char(':'));
+
     KSharedConfigPtr config = KSharedConfig::openConfig();
-    QString xdgContent = ui.defaultXDGConfigDir->text();
     KConfigGroup grp(config, "Global");
 
     grp.writeEntry("XDG_CONFIG_DIRS_DEFAULT", xdgContent);
@@ -69,9 +80,3 @@ void SettingsDialog::saveAndClose()
     close();
 }
 
-void SettingsDialog::readSystemSettings()
-{
-    QString XDG_CONFIG_DIRS = "XDG_CONFIG_DIRS";
-    QString xdgContent = QString::fromLocal8Bit(qgetenv(XDG_CONFIG_DIRS.toUtf8()));
-    ui.defaultXDGConfigDir->setText(xdgContent);
-}

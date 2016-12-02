@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>472</width>
-    <height>302</height>
+    <width>467</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,21 +62,40 @@
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="defaultXDGConfigDir"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Default XDG_CONFIG_DIR</string>
+    <item row="1" column="0">
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QPushButton" name="readDefaultProfiles">
-      <property name="text">
-       <string>Read Default Profiles</string>
+     <widget class="QGroupBox" name="gbElements">
+      <property name="title">
+       <string>Default Profiles</string>
       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Please select, which default profiles are used by this system. This information is only used for displaying and does not change the system settings.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="profileList">
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::InternalMove</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

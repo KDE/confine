@@ -225,7 +225,7 @@ void MainWindow::editRestrictions()
 
 void MainWindow::showSettings()
 {
-    QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(this));
+    QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(um, this));
 
     settingsDialog->exec();
 

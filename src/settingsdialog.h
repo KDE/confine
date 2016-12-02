@@ -23,6 +23,8 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
+#include "userprofilemanager.h"
+
 #include <QDialog>
 #include <ui_settingsdialog.h>
 
@@ -31,16 +33,14 @@ class SettingsDialog : public QDialog
    Q_OBJECT
   
   public:
-    explicit SettingsDialog(QWidget *parent=0);
+    explicit SettingsDialog(UserProfileManager& um, QWidget *parent=0);
     
     public Q_SLOTS:
       void save();
       void saveAndClose();
-      void readSystemSettings();
     
     private:
       Ui::settingsDialog ui;
-      void readSettings();
 };
 
 #endif // SETTINGSDIALOG_H
