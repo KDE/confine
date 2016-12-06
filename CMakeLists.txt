@@ -54,6 +54,7 @@ set(confineUI_SRCS
   ${CMAKE_SOURCE_DIR}/src/copyconfigfile.cpp
   ${CMAKE_SOURCE_DIR}/src/restrictionsdialog.cpp
   ${CMAKE_SOURCE_DIR}/src/settingsdialog.cpp
+  ${CMAKE_SOURCE_DIR}/src/restrictionelement.cpp
 )
 
 qt5_wrap_ui(confine_UI ${CMAKE_SOURCE_DIR}/src/mainwindow.ui ${CMAKE_SOURCE_DIR}/src/configdialog.ui ${CMAKE_SOURCE_DIR}/src/settingsdialog.ui ${CMAKE_SOURCE_DIR}/src/copyconfigfile.ui ${CMAKE_SOURCE_DIR}/src/kderestrictions.ui)

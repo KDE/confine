@@ -20,31 +20,23 @@
  *
  */
 
-#ifndef RESTRICTIONSDIALOG_H
-#define RESTRICTIONSDIALOG_H
+#ifndef RESTRICTIONELEMENT_H
+#define RESTRICTIONELEMENT_H
 
-#include "profile.h"
-#include "restrictionelement.h"
+#include <QString>
 
-#include <ui_kderestrictions.h>
-
-class RestrictionsDialog : public QDialog
+class RestrictionElement
 {
-    Q_OBJECT
-
 public:
-    explicit RestrictionsDialog ( const Profile& pf, QWidget* parent=0 );
-
-public Q_SLOTS:
-    void save();
+  RestrictionElement(const QString& key, const QString& caption, const QString& description);
+  QString getKey() const;
+  QString getCaption() const;
+  QString getDescription() const;
 
 private:
-    void fillWithRestrictions();
-    void readKDERestrictionsFromProfile ();
-
-    Ui::KDERestrictions ui;
-    Profile profile;
-    QList<RestrictionElement> kdeRestrictions;
+  QString m_key;
+  QString m_caption;
+  QString m_description;
 };
 
-#endif // RESTRICTIONSDIALOG_H
+#endif // RESTRICTIONELEMENT_H
