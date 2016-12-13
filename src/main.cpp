@@ -44,7 +44,10 @@ int main(int argc, char* argv[])
         i18n("(c) 2015"),
         QStringLiteral("https://projects.kde.org/projects/playground/utils/confine"),
         QStringLiteral("submit@bugs.kde.org"));
-
+    
+    aboutData.addAuthor(i18n("Gilbert Assaf"), i18n("Project maintainer & developer, overall design"), "gassaf@gmx.de");
+    aboutData.addAuthor(i18n("Siddharth Sharma"), i18n("Mentor"), "Siddharth.kde@gmail.com");
+    
     KAboutData::setApplicationData(aboutData);
 
     QCommandLineParser parser;
