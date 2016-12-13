@@ -44,6 +44,7 @@ public:
   void addProfile(Profile profile);
   QStringList getStandardProfiles() const;
   void registerStandardProfiles();
+  bool userUsesStandardProfiles(const QString& userName) const;
 
 private:
   QString XDG_CONFIG_DIRS;

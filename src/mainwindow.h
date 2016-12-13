@@ -48,6 +48,7 @@ public Q_SLOTS:
   void editRestrictions();
   void showSettings();
   void filterUsers(int state);
+  void useStdProfiles(int state);
 
 private: 
   void setupActions();

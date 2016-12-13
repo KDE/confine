@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     connect(ui.createProfileButton, SIGNAL(released()), this, SLOT(createProfile()));
     connect(ui.restrictionsButton, SIGNAL(released()), this, SLOT(editRestrictions()));
     connect(ui.filterUsers, SIGNAL(stateChanged(int)), this, SLOT(filterUsers(int)));
+    connect(ui.stdProfilesCheckBox, SIGNAL(stateChanged(int)), this, SLOT(useStdProfiles(int)));
 
     setupActions();
 
@@ -84,6 +85,12 @@ void MainWindow::fillUserData(QListWidgetItem* userNameItem)
             item->setText(profileName);
             item->setCheckState(Qt::Unchecked);
         }
+    }
+
+    if (um.userUsesStandardProfiles(userName)) {
+        ui.stdProfilesCheckBox->setCheckState(Qt::Checked);
+    } else {
+        ui.stdProfilesCheckBox->setCheckState(Qt::Unchecked);
     }
 
 }
@@ -268,3 +275,13 @@ void MainWindow::firstStartup()
     grp.sync();
     config->sync();
 }
+
+void MainWindow::useStdProfiles(int state)
+{
+    if (state == Qt::Unchecked) {
+        ui.profileListForUser->setEnabled(true);
+    } else if (state == Qt::Checked) {
+        ui.profileListForUser->setEnabled(false);
+    }
+}
+

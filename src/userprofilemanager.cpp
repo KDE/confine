@@ -168,7 +168,7 @@ QStringList UserProfileManager::getProfileNamesfromUser(const QString& userName)
     Q_FOREACH(const Profile & profile, pfList) {
         profileNames << profile.getName();
     }
-    if (profileNames.isEmpty()) {
+    if (userUsesStandardProfiles(userName)) {
         profileNames << getStandardProfiles();
     }
     return profileNames;
@@ -231,4 +231,12 @@ void UserProfileManager::registerStandardProfiles()
     QString defaultProfiles = cf->getXDGConfigDirsDefault();
     registerProfiles(defaultProfiles);
 }
+
+bool UserProfileManager::userUsesStandardProfiles(const QString& userName) const
+{
+    User user = users.value(userName);
+    QList<Profile> pfList = user.getProfiles();
+    return pfList.isEmpty();
+}
+
 
