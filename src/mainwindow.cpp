@@ -280,8 +280,10 @@ void MainWindow::useStdProfiles(int state)
 {
     if (state == Qt::Unchecked) {
         ui.profileListForUser->setEnabled(true);
+        ui.stdProfilesCheckBox->setEnabled(false);
     } else if (state == Qt::Checked) {
         ui.profileListForUser->setEnabled(false);
+        ui.stdProfilesCheckBox->setEnabled(true);
     }
 }
 
