@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settingsDialog</class>
+ <widget class="QWidget" name="settingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>467</width>
+    <height>308</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <widget class="QPushButton" name="okButton">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>260</y>
+     <width>84</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ok</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="applyButton">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>260</y>
+     <width>84</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Apply</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButton">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>260</y>
+     <width>84</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>441</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="1" column="0">
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QGroupBox" name="gbElements">
+      <property name="title">
+       <string>Default Profiles</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Please select, which default profiles are used by this system. This information is only used for displaying and does not change the system settings.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="profileList">
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::InternalMove</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
